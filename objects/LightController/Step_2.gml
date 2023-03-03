@@ -1,0 +1,1 @@
+UpdateLights(dt);

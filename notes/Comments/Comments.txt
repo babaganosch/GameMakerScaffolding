@@ -1,0 +1,20 @@
+
+
+TODOs and ideas..
+
+For object culling, extend the camera with a feature to calculate the size buffer info.
+This should be calculated based on the velocity of the camera:
+(Example: camera moving to the right)
+[ .. ]
+  [ ..  ]
+      [ ..   ]
+        [ ..  ]
+        [ .. ]
+Drawback of this however could be activation of objects and directly deactivating them
+again due to buffer shrinking when slowing down
+
+
+Engine could be extended with a lightweight state machine
+
+Terminal should probably be reworked from scratch
+
