@@ -1,9 +1,10 @@
-if (keyboard_lastkey == 10) {
+if (keyboard_lastkey == open_close_button) {
     active = !active;
     if (!active) broadcast(MESSAGES.GAME_UNPAUSE);
     else broadcast(MESSAGES.GAME_PAUSE);
     keyboard_lastchar = "";
 }
+
 if (!active) return;
 switch (keyboard_lastkey)
 {

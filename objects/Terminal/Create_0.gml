@@ -4,6 +4,10 @@ receiver = new Receiver(["system"]);
 active = false;
 alpha = 0;
 
+// §: 10 on mac, 220 on windows
+if (os_type == os_macosx) open_close_button = 10;
+else open_close_button = 220;
+
 input_string = "";
 input_index = 0;
 input_marker_flag = false;

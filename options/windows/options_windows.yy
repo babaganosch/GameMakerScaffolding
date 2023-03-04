@@ -3,7 +3,7 @@
   "resourceVersion": "1.1",
   "name": "Windows",
   "ConfigValues": {
-    "Debug": {"option_windows_display_name":"GameMaker Scaffolding",},
+    "Debug": {"option_windows_display_name":"GameMaker Scaffolding","option_windows_resize_window":"true","option_windows_allow_fullscreen_switching":"true",},
   },
   "option_windows_allow_fullscreen_switching": false,
   "option_windows_borderless": false,
