@@ -11,4 +11,3 @@ array_sort(active_game_objects, function(e1, e2) {
     if (order == 0) order = e1.sorting_identifier - e2.sorting_identifier;
     return order;
 });
-ACTIVE_GAME_OBJECTS = active_game_objects;

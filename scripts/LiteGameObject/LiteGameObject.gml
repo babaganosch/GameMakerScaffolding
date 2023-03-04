@@ -50,13 +50,15 @@ function LiteGameObject(start_x, start_y, sprite) constructor
 {
     x = start_x;
     y = start_y;
+    sx = x;
+    sy = y;
     sprite_index = sprite;
     array_push(ACTIVE_LITE_OBJECTS, self);
     
     static set_sprite = function(spr) { sprite_index = spr; }
     
     // Override the update and draw when implementing new LiteGameObject ancestor, if needed.
-    static update = function(delta) { }
+    static update = function(delta) { x = sx + cos(current_time * 0.005) * 8; y = sy + sin(current_time * 0.005) * 8; }
     static draw = function()
     {
         if (sprite_index < 0) return;

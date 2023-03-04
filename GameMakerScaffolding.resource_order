@@ -20,7 +20,7 @@
     {"name":"ShaderPrograms","order":1,"path":"scripts/ShaderPrograms/ShaderPrograms.yy",},
     {"name":"Renderer","order":2,"path":"objects/Renderer/Renderer.yy",},
     {"name":"spr_test_ball","order":3,"path":"sprites/spr_test_ball/spr_test_ball.yy",},
-    {"name":"spr_debug_box_sml","order":4,"path":"sprites/spr_debug_box_sml/spr_debug_box_sml.yy",},
+    {"name":"spr_debug_box_tny","order":4,"path":"sprites/spr_debug_box_tny/spr_debug_box_tny.yy",},
     {"name":"InputHandler","order":6,"path":"objects/InputHandler/InputHandler.yy",},
     {"name":"Comments","order":5,"path":"notes/Comments/Comments.yy",},
     {"name":"spr_debug_box_big","order":5,"path":"sprites/spr_debug_box_big/spr_debug_box_big.yy",},

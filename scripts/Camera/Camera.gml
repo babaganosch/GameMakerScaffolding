@@ -4,13 +4,17 @@ function Camera(x, y, w, h) constructor
     size  = [w, h];
     edges = [x, y, x+w, y+h];
     ref   = camera_create_view(pos[0], pos[1], size[0] + 1, size[1] + 1);
-    buffer = [50, 50];
+    buffer = [75, 75];
+    active_zone = [edges[X1] - buffer[X], edges[Y1] - buffer[Y],
+                   edges[X2] + buffer[X], edges[Y2] + buffer[Y]];
     
     static update = function()
     {
         pos[X] = clamp(pos[X], CELL_W, room_width - size[X] - CELL_W);
         pos[Y] = clamp(pos[Y], CELL_H, room_height - size[Y] - CELL_H);
         edges = [ pos[X], pos[Y], pos[X] + size[X], pos[Y] + size[Y] ];
+        active_zone = [edges[X1] - buffer[X], edges[Y1] - buffer[Y],
+                       edges[X2] + buffer[X], edges[Y2] + buffer[Y]];
         camera_set_view_pos(ref, floor(pos[X]), floor(pos[Y]));
     }
     

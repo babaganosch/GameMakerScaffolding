@@ -44,7 +44,7 @@
     {"id":{"name":"Renderer","path":"objects/Renderer/Renderer.yy",},"order":2,},
     {"id":{"name":"spr_test_ball","path":"sprites/spr_test_ball/spr_test_ball.yy",},"order":3,},
     {"id":{"name":"WorldController","path":"objects/WorldController/WorldController.yy",},"order":0,},
-    {"id":{"name":"spr_debug_box_sml","path":"sprites/spr_debug_box_sml/spr_debug_box_sml.yy",},"order":4,},
+    {"id":{"name":"spr_debug_box_tny","path":"sprites/spr_debug_box_tny/spr_debug_box_tny.yy",},"order":4,},
     {"id":{"name":"InputHandler","path":"objects/InputHandler/InputHandler.yy",},"order":6,},
     {"id":{"name":"Comments","path":"notes/Comments/Comments.yy",},"order":5,},
     {"id":{"name":"spr_font_terminal","path":"sprites/spr_font_terminal/spr_font_terminal.yy",},"order":0,},

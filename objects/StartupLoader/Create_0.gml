@@ -23,7 +23,7 @@ instance_create(Time, 0, 0, 0);
 instance_create(Terminal, 0, 0, 0);
 instance_create(ParticlesController, 0, 0, 0);
 instance_create(WorldController, 0, 0, 0);
-//instance_create(LightController, 0, 0, -200);
+//instance_create(LightController, 0, 0, -400);
 
 // Stress test lights
 /*
@@ -36,7 +36,6 @@ for (var _x = 0; _x < (room_width div _z); _x++) {
     }
 }
 */
-
 
 // Stress test instances
 /*
@@ -54,12 +53,11 @@ LOG("INSTANCES:", _num);
 // Stress test LITE instances
 /*
 var _num = 0;
-var _z = 12;
+var _z = 10;
 global.TEST = [];
 for (var _x = 0; _x < (room_width div _z); _x++) {
     for (var _y = 0; _y < (room_height div _z); _y++) {
-        var a = new LiteGameObject(_x * _z, _y * _z, spr_ico_warning);
-        a = -1;
+        var a = new LiteGameObject(_x * _z, _y * _z, spr_debug_box_tny);
         _num++;
     }
 }

@@ -17,7 +17,7 @@ function Shop(tileset, w, h) : World(tileset, w, h) constructor
 }
 
 global.level = [];
-global.area = AREA.OVER_WORLD;
+global.area = AREA.SHOP;
 var level = global.level;
 var level_size = [ room_width div CELL_W, room_height div CELL_H ];
 level[AREA.OVER_WORLD] = new World(tset_test0, level_size[X], level_size[Y]);

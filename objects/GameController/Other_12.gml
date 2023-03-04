@@ -1,12 +1,7 @@
 /// @desc LITE_OBJECT_CULLING
 
 // Check square
-var cs = CAMERA.edges;
-var buffer = CAMERA.buffer;
-cs[X1] -= buffer[X];
-cs[Y1] -= buffer[Y];
-cs[X2] += buffer[X];
-cs[Y2] += buffer[Y];
+var cs = CAMERA.active_zone;
 
 var inactive_game_objects = INACTIVE_LITE_OBJECTS;
 var active_game_objects   = ACTIVE_LITE_OBJECTS;
@@ -32,6 +27,3 @@ for (var i = 0; i < array_length(active_game_objects); i++)
         array_delete(active_game_objects, i--, 1);
     }
 }
-
-ACTIVE_LITE_OBJECTS   = active_game_objects;
-INACTIVE_LITE_OBJECTS = inactive_game_objects;

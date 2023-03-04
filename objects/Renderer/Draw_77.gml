@@ -29,11 +29,24 @@ render_to_target(self, surface_buffer[!surface_flag], function() {
     draw_surface(application_surface, 0, 0);
 });
 
+//// Post FX (low-res)
+// Post FX passes are drawn ping-pong between the two
+// frame buffers. Just run the post_fx_pass with 
+// desired shader program, and setup necessary stuff in
+// the callback function
 
-// Post FX (low-res)
+/*
 post_fx_pass(-1, function() {
     
 });
+
+post_fx_pass(-1, function() {
+    
+});
+
+post_fx_pass(-1, function() {
+    
+});*/
 
 // Final rendering to screen (hi-res)
 render_to_screen(-1, CAMERA.pos[0], CAMERA.pos[1], scale, function() {
