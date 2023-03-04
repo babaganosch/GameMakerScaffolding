@@ -8,7 +8,10 @@ global.game_version = string(VERSION_MAJOR)+"."+string(VERSION_MINOR)+"."+string
 if (DEBUG) { global.game_version += "-DEBUG"; } else { randomize(); }
 
 #macro LOG __empty_func
-#macro Debug:LOG __log_function
+#macro Debug:LOG __log_func
+
+#macro LOG_T __empty_func
+#macro Debug:LOG_T __log_terminal_func
 
 #macro print __empty_func
 #macro Debug:print __print
@@ -18,7 +21,7 @@ if (DEBUG) { global.game_version += "-DEBUG"; } else { randomize(); }
 
 function __empty_func() { gml_pragma("forceinline"); return; __empty_func(argument[0]); }
 
-function __log_function() {
+function __log_func() {
     gml_pragma("forceinline");
     var str = "";
     for (var i = 0; i < argument_count; ++i)
@@ -26,6 +29,18 @@ function __log_function() {
         str += " " + string(argument[i]);
     }
     show_debug_message("[{0} {1}]: {2}", object_get_name(object_index), id, str);
+}
+
+function __log_terminal_func() {
+    gml_pragma("forceinline");
+    var str = "";
+    for (var i = 0; i < argument_count; ++i)
+    {
+        str += " " + string(argument[i]);
+    }
+    Terminal.Print(new Terminal.Prompt(
+        Terminal.c_success, string("[{0} {1}]:{2}", object_get_name(object_index), id, str)
+    ));
 }
 
 #macro IS_SINGLETON { if (!AssertSingleton()) return; }

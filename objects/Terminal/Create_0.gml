@@ -12,6 +12,7 @@ prompt_character = "$";
 c_special = 0xE89120;
 c_time = 0xBFD9F5;
 c_error = 0x1C34E8;
+c_success = 0x6DB38B;
 
 var font_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
                       "abcdefghijklmnopqrstuvwxyz" +
@@ -190,7 +191,7 @@ commands = {
         var xx = mouse_x, yy = mouse_y;
         instance_create(asset_get_index(args[1]), xx, yy, 0); 
         var str = string("{0} spawned at {1} {2}", args[1], xx, yy);
-        Terminal.Print(new Terminal.Prompt(0x6DB38B, str));
+        Terminal.Print(new Terminal.Prompt(Terminal.c_success, str));
     },
     "pause": function() {
         broadcast(MESSAGES.GAME_PAUSE);

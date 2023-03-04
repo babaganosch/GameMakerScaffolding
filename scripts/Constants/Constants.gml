@@ -1,8 +1,9 @@
+#macro GAME_VERSION  global.game_version
 #macro VERSION_MAJOR 0
 #macro VERSION_MINOR 0
 #macro VERSION_PATCH 1
 
-/// Debug | Release
+/// Debug | Release (handled by build config)
 #macro DEBUG false
 #macro DEBUG_STRESS_TEST false
 #macro Debug:DEBUG true
@@ -15,9 +16,9 @@
 #macro CELL_H     8
 
 /// Time
-#macro dt         global._dt
-#macro dt_ms      global._dt_ms
-#macro real_dt    global._real_dt
+#macro dt          global.__dt
+#macro dt_ms       global.__dt_ms
+#macro real_dt     global.__real_dt
 
 /// Alarms
 #macro game_alarms global.__game_alarms
@@ -38,8 +39,8 @@ enum MESSAGES {
     FULLSCREEN_TOGGLED,         // 1
     GUI_SIZE_CHANGED,           // 2
     
-    GAME_PAUSE,
-    GAME_UNPAUSE
+    GAME_PAUSE,                 // 3
+    GAME_UNPAUSE                // 4
 }
 
 if (__NOTIFICATIONS_DEBUG) global.MESSAGES_DEBUG_LOOKUP = [

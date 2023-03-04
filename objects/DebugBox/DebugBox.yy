@@ -32,8 +32,8 @@
   "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "spr_debug_box",
-    "path": "sprites/spr_debug_box/spr_debug_box.yy",
+    "name": "spr_debug_box_sml",
+    "path": "sprites/spr_debug_box_sml/spr_debug_box_sml.yy",
   },
   "spriteMaskId": null,
   "visible": false,

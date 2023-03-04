@@ -1,8 +1,8 @@
 
 function UpdateVelocities(object_physics, delta) 
 {
-    var ACCELERATION = object_physics.acceleration * delta; // 0.1
-    var FRICTION = object_physics.friction * delta;  // 0.05
+    var ACCELERATION = object_physics.acceleration * delta;
+    var FRICTION = object_physics.friction * delta;
     var xforce = object_physics.force[X];
     var yforce = object_physics.force[Y];
     
@@ -15,10 +15,12 @@ function UpdateVelocities(object_physics, delta)
         object_physics.velocity[Y] += yforce * ACCELERATION;
     else
         object_physics.velocity[Y] = lerp(object_physics.velocity[Y], 0, FRICTION);
-    
 }
 
-
+/****
+ * If velocity is greater than the CELL dimensions break down the collision checks
+ * into multiple checks, to prevent moving through narrow walls on high velocity
+ */
 function MoveAndCollide(object_physics, delta)
 {
     var object_velocity = [ object_physics.velocity[X] * delta, object_physics.velocity[Y] * delta ];
@@ -39,27 +41,25 @@ function MoveAndCollide(object_physics, delta)
             if (hspd > 0) 
             {
                 var cell = CURRENT_LEVEL.get_cell_coordinates(bbox_right + hspd, y);
-                if (x <  cell[X1])
+                if (bbox_right <  cell[X1])
                 {
                     x = cell[X1] - right_offset - 1;
                 }
                 else
                 {
-                    cell = CURRENT_LEVEL.get_cell_coordinates(x, y);
-                    x = cell[X1] + left_offset;
+                    x = cell[X1] - right_offset - 1 + CELL_W;
                 }
             }
-            else 
+            else if (hspd < 0)
             {
                 var cell = CURRENT_LEVEL.get_cell_coordinates(bbox_left + hspd, y);
-                if (x > cell[X2]) 
+                if (bbox_right > cell[X2]) 
                 {
                     x = cell[X2] + left_offset;
                 }
                 else
                 {
-                    cell = CURRENT_LEVEL.get_cell_coordinates(x, y);
-                    x = cell[X1] + left_offset;
+                    x = cell[X2] + left_offset + CELL_W;
                 }
             }
             hspd = 0;
@@ -73,7 +73,6 @@ function MoveAndCollide(object_physics, delta)
     if (CURRENT_LEVEL.check_collision_square(bbox_left, bbox_top, bbox_right - 1, bbox_bottom - 1))
     { // Bad movement
         x = xprevious;
-        y = yprevious;
     }
 
     signed_sub_steps = object_velocity[Y] div CELL_H;
@@ -83,30 +82,28 @@ function MoveAndCollide(object_physics, delta)
         if (CURRENT_LEVEL.check_collision_square(bbox_left, bbox_top + vspd, bbox_right, bbox_bottom + vspd + 1))
         {
             // Vertical wall-collision, snap to the wall
-            if (vspd >= 0)
+            if (vspd > 0)
             {
                 var cell = CURRENT_LEVEL.get_cell_coordinates(x, bbox_bottom + vspd);
-                if (y < cell[Y1]) 
+                if (bbox_bottom < cell[Y1]) 
                 {
                     y = cell[Y1] - bottom_offset - 1;
                 }
                 else
                 {
-                    cell = CURRENT_LEVEL.get_cell_coordinates(x, y);
-                    y = cell[Y1] + top_offset;
+                    y = cell[Y1] - bottom_offset - 1 + CELL_H;
                 }
             }
-            else
+            else if (vspd < 0)
             {
                 var cell = CURRENT_LEVEL.get_cell_coordinates(x, bbox_top + vspd);
-                if (y > cell[Y2])
+                if (bbox_bottom > cell[Y2])
                 {
                     y = cell[Y2] + top_offset;
                 }
                 else
                 {
-                    cell = CURRENT_LEVEL.get_cell_coordinates(x, y);
-                    y = cell[Y1] + top_offset;
+                    y = cell[Y2] + top_offset + CELL_H;
                 }
             }
             vspd = 0;
@@ -117,9 +114,8 @@ function MoveAndCollide(object_physics, delta)
         y += vspd;
     }
 
-    // Bad movement (This one seems to occur quite often on south collision when origin is bottom)
     if (CURRENT_LEVEL.check_collision_square(bbox_left, bbox_top, bbox_right, bbox_bottom))
-    {
+    { // Bad movement
         y = yprevious;
     }
     
