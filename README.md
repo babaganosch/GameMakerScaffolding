@@ -25,6 +25,8 @@ Setup is easy. Just download the template .yyz file and create a new project by 
 ## Rendering
 Instead of directly rendering the application surface to the screen, the application surface is scaled down to fit the style of low-res type of games and is at the end of the draw-pass rendered to a double buffer. This double buffer can then be utilized for easy post-fx drawing by just rendering ping-pong style between the two buffers. Finally, when all post-fx is rendered, the surface will be rendered upscaled to the screen. It is also possible to render this stage through a shader as well, for high-res post-fx.
 
+A camera is included in the rendering system and easily controllable, and expandable after demand of the user.
+
 Shader programs are saved as structs, cointaining easy utilization and access to uniforms and samplers.
 
 ## NotificationSystem
@@ -60,7 +62,7 @@ receiver.add(MESSAGES.MONSTER_KILLED, function(score) {
 broadcast(MESSAGES.MONSTER_KILLED, 10);
 ```
 
-# Timing module
+## Timing module
 Keeps tracks of gamespeed, delta time and timers. When working with delta time, the regular GameMaker-Alarms can be a troublesome as they are dependent on frame count and not real time. GameMaker has support for real-time timers with timesources, although I personally find them bulky and inconvenient. Especially when you need to pause some timers due to game being in a paused state.
 
 Example usage:
@@ -70,7 +72,7 @@ Example usage:
 // Create a local timer contained within the object.
 timer = new AlarmSystem();
 
-// This will print "Hello World!" every 200 milliseconds, periodically and contained within the object.
+// This will print "Hello World!" every 200 milliseconds, periodically and contained within the object. Destroyed when manually aborted or object is destroyed.
 timer.add(milliseconds(200), function() {
     print("Hello World!");
 }, true);
@@ -86,3 +88,51 @@ sys_alarms.add(milliseconds(200), function() {
     print("Hello World!");
 }, true);
 ```
+
+## ParticleSystems
+A simple wrapper and controller for particle systems. This makes it easy to control, enable and disable particle systems when not needed. For example when object is culled due to outside the view. These particle systems also update based on delta time instead of directly bound to the frame update speed.
+
+Example usage:
+```gml
+/// Adding a new type of particle to the system in the particle controller
+particle_controller.add_particle(init_particle(PARTICLES.BLUE_FLAMES));
+```
+
+```gml
+/// Another object who sets up a particle system and creates some crisp blue flames
+ps = new ParticleSystem();
+flames = load_particle(PARTICLES.BLUE_FLAMES);
+
+// Spawns 10 blue flames at pos 150,150
+ps.spawn_particle(150, 150, flames, 10);
+
+// Create an emitter and continuously spawn 10 flames
+emitter = ps.create_emitter(0, 0, 20, 20, ps_shape_rectangle, ps_distr_linear);
+emitter.set_stream(flames, 10);
+```
+
+## Lighting
+GameMaker Scaffolding includes a lightweight 2D lighting system. [Link to original repo.](https://github.com/babaganosch/LightingSystem2D) This is an old project of mine, a remake of the lighting system <a href="https://github.com/niksudan/prettylight">prettylight</a> made by <a href="https://github.com/niksudan">@niksudan</a>.
+
+If needed, one can construct a light sprite of any size runtime with `ConstructLightSprite()`. (If used, this should always be done once at bootup and not during gameplay). This is good for experimentation, but preferably, the sprites should not be created runtime. The sprites can be of any shape or size. For device compatibility however, try to keep the dimensions square and the sizes in a power of two. For example, 16x16, 32x32..
+
+```gml
+spr_light = ConstructLightSprite(128);
+```
+
+```gml
+light = new LightSource( spr_light, {
+  color: c_orange,
+  alpha: 0.7,
+  flicker: {
+    amplitude: 0.05,
+    speed: 0.02
+  }
+});
+```
+
+## Terminal
+I've included a terminal for easy debugging. This is a great way to run commands runtime like spawning instances, changing variables or changing states of the game.
+
+## World Module
+...

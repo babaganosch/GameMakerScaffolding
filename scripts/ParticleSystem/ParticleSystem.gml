@@ -116,6 +116,11 @@ function ParticleSystem(depth) constructor {
         return _emitter;
     }
     
+    static spawn_particle = function(x, y, particle, quantity)
+    {
+        part_particles_create(index, x, y, particle, quantity);
+    }
+    
     ds_list_add(global.__ParticleSystems, self);
 }
 
@@ -146,11 +151,6 @@ function ParticleEmitter(particle_system, x1, y1, x2, y2, shape, distribution) c
     static set_stream = function(particle, quantity)
     {
         part_emitter_stream(_ps_ref, _emitter_ref, particle, quantity);
-    }
-    
-    static spawn_particle = function(x, y, particle, quantity)
-    {
-        part_particles_create(_ps_ref, x, y, particle, quantity);
     }
     
     static spawn_particle_color = function(x, y, color, particle, quantity)
