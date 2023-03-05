@@ -46,7 +46,7 @@ receiver.add("Monster killed", function() {
 // Code in a monsters destroy event
 broadcast("Monster killed");
 ```
-The messages do not have to be strings. Enums or numbers works as well, and is preferred performance wise.
+The messages do not have to be strings. Enums or numbers work as well, and are preferred performance wise.
 ```gml
 enum MESSAGES {
     MONSTER_KILLED,
