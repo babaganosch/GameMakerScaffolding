@@ -4,17 +4,60 @@
 
 ---
 
-**GameMaker Scaffolding** is a template project for GameMaker Studio 2.3, focusing on 2D tile-based world games. The reason for this template is to facilitate new projects for me, and possibly others, as I grew tierd of simply copy-pasting basic stuff from prior projects each time I wanted to test something new.
+**GameMaker Scaffolding** is a template project for GameMaker Studio 2.3, focusing on 2D low-res tile-based games. The reason for this template is to facilitate new projects for me, and possibly others, as I grew tierd of simply copy-pasting basic stuff from prior projects each time I wanted to test something new.
 
 Setup is easy. Just download the template .yyz file and create a new project by executing it.
 
-Features included:
-* Rendering system - double buffered rendering for post fx and shader programs as structs.
-* Notification system - a signal framework for easy observer pattern implementation, and a great way to decouple objects.
-* Timing module - enabling easy implementations of delta time updates, profiling and an alarm system based on real time instead of frames.
-* ParticleSystem wrapper, for easy particle systems setup and allowing particles to update based on delta time.
-* Lighting system - lightweight 2D light engine with vivid lights based on sprites or shapes.
-* Terminal module - a lightweight debugging console for easy input/output during runtime, with easy to setup commands.
-* World module - worlds, or levels, described as scructs with tilemaps and fast collision checking.
-* GameObjects and LiteGameObjects - the ability to create and diffirentiate between real GameMaker objects and liteweight objects based on structs.
-* GameController module - Controlls object culling, sorting and overall behaviour of the game.
+## Feature list
+* __Rendering system__ - double buffered rendering for post fx and shader programs as structs.
+* __Notification system__ - a signal framework for easy observer pattern implementation, and a great way to decouple objects.
+* __Timing module__ - enabling easy implementations of delta time, profiling and an alarm system based on real time instead of frames.
+* __ParticleSystem wrapper__ - for easy particle systems setup and allowing particles to update based on delta time.
+* __Lighting system__ - lightweight 2D light engine with vivid lights based on sprites or shapes.
+* __Terminal module__ - a lightweight debugging console for easy input/output during runtime, with easy to setup commands.
+* __World module__ - worlds, or levels, described as scructs with tilemaps and fast collision checking.
+* __GameObjects__ and __LiteGameObjects__ - the ability to create and diffirentiate between real GameMaker objects and lightweight objects based on structs.
+* __GameController__ module - Controlls object culling, sorting and overall behaviour of the game. GameController events is split up between a couple frames, to even out the workload and improve performance.
+
+---
+
+## Rendering
+Instead of directly rendering the application surface to the screen, the application surface is scaled down to fit the style of low-res type of games and is at the end of the draw-pass rendered to a double buffer. This double buffer can then be utilized for easy post-fx drawing by just rendering ping-pong style between the two buffers. Finally, when all post-fx is rendered, the surface will be rendered upscaled to the screen. It is also possible to render this stage through a shader as well, for high-res post-fx.
+
+Shader programs are saved as structs, cointaining easy utilization and access to uniforms and samplers.
+
+# NotificationSystem
+This is a lightweight signal framework as a great way of decoupling objects, and making the games more event driven. [Link to original repo.](https://github.com/babaganosch/NotificationSystem) This is an old project of mine, but still very relevant.
+
+Following is some example usage.
+```gml
+// Create event for an object which wants to listen to the notification bus.
+subscribe();
+receiver = new Receiver();
+
+receiver.add("Monster killed", function() {
+    increase_score();
+});
+```
+```gml
+// Code in a monsters destroy event
+broadcast("Monster killed");
+```
+The messages do not have to be strings. Enums or numbers works as well, and is preferred performance wise.
+```gml
+enum MESSAGES {
+    MONSTER_KILLED,
+    GAME_OVER,
+    PLAYER_JUMP,
+    ...
+}
+
+receiver.add(MESSAGES.MONSTER_KILLED, function(score) {
+    increase_score(score);
+});
+
+broadcast(MESSAGES.MONSTER_KILLED, 10);
+```
+
+# Timing module
+...
