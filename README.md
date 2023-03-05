@@ -144,10 +144,10 @@ Example usage of setting up levels:
 
 ```gml
 function Shop(tileset, w, h) : World(tileset, w, h) constructor
-{ ... // Stuff relevant for a shop }
+{ ... } // Stuff relevant for a shop
 
 function OverWorld(tileset, w, h) : World(tileset, w, h) constructor
-{ ... // Stuff relevant for an over world }
+{ ... } // Stuff relevant for an over world
 
 enum AREA
 {
