@@ -20,14 +20,15 @@ Setup is easy. Just download the template .yyz file and create a new project by 
 * __GameController__ module - Controlls object culling, sorting and overall behaviour of the game. GameController events is split up between a couple frames, to even out the workload and improve performance.
 
 ---
+# Features
 
 ## Rendering
 Instead of directly rendering the application surface to the screen, the application surface is scaled down to fit the style of low-res type of games and is at the end of the draw-pass rendered to a double buffer. This double buffer can then be utilized for easy post-fx drawing by just rendering ping-pong style between the two buffers. Finally, when all post-fx is rendered, the surface will be rendered upscaled to the screen. It is also possible to render this stage through a shader as well, for high-res post-fx.
 
 Shader programs are saved as structs, cointaining easy utilization and access to uniforms and samplers.
 
-# NotificationSystem
-This is a lightweight signal framework as a great way of decoupling objects, and making the games more event driven. [Link to original repo.](https://github.com/babaganosch/NotificationSystem) This is an old project of mine, but still very relevant.
+## NotificationSystem
+This is a lightweight signal framework and a great way to decouple objects, and making the game logic more event driven. [Link to original repo.](https://github.com/babaganosch/NotificationSystem) This is an old project of mine, but still very relevant.
 
 Following is some example usage.
 ```gml
@@ -60,4 +61,28 @@ broadcast(MESSAGES.MONSTER_KILLED, 10);
 ```
 
 # Timing module
-...
+Keeps tracks of gamespeed, delta time and timers. When working with delta time, the regular GameMaker-Alarms can be a troublesome as they are dependent on frame count and not real time. GameMaker has support for real-time timers with timesources, although I personally find them bulky and inconvenient. Especially when you need to pause some timers due to game being in a paused state.
+
+Example usage:
+```gml
+/// Create event of something
+
+// Create a local timer contained within the object.
+timer = new AlarmSystem();
+
+// This will print "Hello World!" every 200 milliseconds, periodically and contained within the object.
+timer.add(milliseconds(200), function() {
+    print("Hello World!");
+}, true);
+
+// This will print "Hello World!" every 200 milliseconds, once and even though the object disappear.
+game_alarms.add(milliseconds(200), function() {
+    print("Hello World!");
+}, false);
+
+// This will print "Hello World!" every 200 milliseconds, periodically even though the object disappear.
+// This timer will also tick even though the game is in a paused state and gamespeed is tuned to 0 fps (great for system controllers).
+sys_alarms.add(milliseconds(200), function() {
+    print("Hello World!");
+}, true);
+```

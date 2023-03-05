@@ -1,5 +1,5 @@
-global.__game_alarms = new AlarmSystem();
-global.__system_alarms = new AlarmSystem();
+game_alarms = new AlarmSystem();
+sys_alarms = new AlarmSystem();
 
 function AlarmEntry(duration, callback, periodic) constructor
 {
