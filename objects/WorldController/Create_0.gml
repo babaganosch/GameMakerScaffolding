@@ -32,6 +32,5 @@ level[AREA.OVER_WORLD].render();
 level[AREA.SHOP].set_area(5, 5, level_size[X] - 5, level_size[Y] - 5, CELL_DATA.FLOOR);
 level[AREA.SHOP].set_area(24, 24, 26, 26, CELL_DATA.WALL);
 level[AREA.SHOP].render();
-global.level = level;
 
 CURRENT_LEVEL.activate();
