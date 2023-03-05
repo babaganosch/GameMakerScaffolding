@@ -192,7 +192,7 @@ All non-system game objects should inherit the parent GameObject class, or any a
 
 As stated above, GameObjects gets culled and deactivated when outside the camera view, and then re-activated again when back inside the view.
 
-It is also possible to create sub-classes of the LiteGameObject struct. These objects is only structs and more lightweight for the engine to handle. This is a good choice when needing a great amount of objects of something with simple logic. For example, bullets, effects, bugs, whatever. LiteGameObjects are also culled by the Game Controller.
+It is also possible to create sub-classes of the LiteGameObject struct. These objects are only structs and more lightweight for the engine to handle. This is a good choice when needing a great amount of objects of something with simple logic. For example, bullets, effects, bugs, whatever. LiteGameObjects are also culled by the Game Controller.
 
 ```gml
 function Bullet(x, y, hspd, vspd) : LiteGameObject(x, y, spr_bullet) constructor
