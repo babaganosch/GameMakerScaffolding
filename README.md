@@ -251,3 +251,5 @@ Another thing that the Game Controller does is handle the rendering of all the G
 The project also contains some other convenient stuff, like singleton keywords, easy memory cleanup for persistent objects, stress-test macro and easy logging functionality.
 
 There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. Game size is currently hardcoded in a very ugly way. I need to figure out a great way to not batch-break the rendering when GameObjects need to render with shaders etc.
+
+Light system could should probably be implemented as rgba16f surfaces, and blurring shaders could be dropped, when available on master release of GMS.
