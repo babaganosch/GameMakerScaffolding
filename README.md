@@ -131,8 +131,16 @@ light = new LightSource( spr_light, {
 });
 ```
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/babaganosch/open_storage/master/lights_0.png">
+</p>
+
 ## Terminal
 I've included a terminal for easy debugging. This is a great way to run commands runtime like spawning instances, changing variables or changing states of the game.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/babaganosch/open_storage/master/terminal_0.gif">
+</p>
 
 ## World Module
 Levels, or Worlds, are expressed as 2D grids contained within structs. Each cell of the grid contains some data expressing the cell, for example if it's a wall or a floor tile. For simplicity sake, the information is expressed per data-bit. On top of that, a solid cell (wall or void), is an even number as opposed to an open cell (floor or whatever) which is expressed as an uneven number. This makes collision checking simple, and the data does not take up a lot of unnecessary storage. For example, a cell could look like this:
@@ -235,7 +243,11 @@ frame_events[3] = [ GC_EVENT.OBJECT_SORTING, GC_EVENT.UPDATE_SOMETHING_IMPORTANT
 
 Another thing that the Game Controller does is handle the rendering of all the GameObjects. The rendering order (depth value) is based on the y value of the GameObject. But instead of being drawn on different layers, as with the usual `depth = -y;`, every object are rendered in the same layer and no overhead of creating new layers per y-value is required.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/babaganosch/open_storage/master/culling_0.gif">
+</p>
+
 ## Notes
 The project also contains some other convenient stuff, like singleton keywords, easy memory cleanup for persistent objects, stress-test macro and easy logging functionality.
 
-There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. I need to figure out a great way to not batch-break the rendering when GameObjects need to render with shaders etc.
+There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. Game size is currently hardcoded in a very ugly way. I need to figure out a great way to not batch-break the rendering when GameObjects need to render with shaders etc.

@@ -51,7 +51,6 @@ LOG("INSTANCES:", _num);
 */
 
 // Stress test LITE instances
-/*
 var _num = 0;
 var _z = 10;
 global.TEST = [];
@@ -62,6 +61,6 @@ for (var _x = 0; _x < (room_width div _z); _x++) {
     }
 }
 LOG("LITE INSTANCES:", _num);
-*/
+
 
 instance_destroy();
