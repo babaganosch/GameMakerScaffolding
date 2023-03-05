@@ -241,7 +241,7 @@ frame_events[2] = [ GC_EVENT.LITE_OBJECT_CULLING ];
 frame_events[3] = [ GC_EVENT.OBJECT_SORTING, GC_EVENT.UPDATE_SOMETHING_IMPORTANT ];
 ```
 
-Another thing that the Game Controller does is handle the rendering of all the GameObjects. The rendering order (depth value) is based on the y value of the GameObject. But instead of being drawn on different layers, as with the usual `depth = -y;`, every object are rendered in the same layer and no overhead of creating new layers per y-value is required.
+Another thing that the Game Controller does is handle the rendering of all the GameObjects. The rendering order is based on the y value of the GameObject. But instead of being drawn on different layers, as with the usual `depth = -y;`, every object is rendered in the same layer and no overhead of creating new layers per y-value is required.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/babaganosch/open_storage/master/culling_0.gif">
