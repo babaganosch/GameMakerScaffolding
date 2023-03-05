@@ -188,7 +188,7 @@ CURRENT_LEVEL.activate();
 ```
 
 ## GameObjects
-All non-GameSystem objects should inherit the parent GameObject class, or any ancestor to that. This will enable the object to update and render only when not outside view, and be controlled by the Game Controller instance. The ancestor Entity of GameObject contains some basic physics, and is will perform collision checks against the current world.
+All non-system game objects should inherit the parent GameObject class, or any ancestor to that. This will enable the object to update and render only when not outside view, and be controlled by the Game Controller instance. The ancestor Entity of GameObject contains some basic physics, and is will perform collision checks against the current world.
 
 As stated above, GameObjects gets culled and deactivated when outside the camera view, and then re-activated again when back inside the view.
 
