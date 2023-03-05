@@ -64,4 +64,12 @@ function LiteGameObject(start_x, start_y, sprite) constructor
         if (sprite_index < 0) return;
         draw_sprite(sprite_index, 0, x, y);
     }
+    
+    static destroy = function()
+    {
+        var i = array_get_index(ACTIVE_LITE_OBJECTS, self);
+        if (i >= 0) array_delete(ACTIVE_LITE_OBJECTS, i, 1);
+        i = array_get_index(INACTIVE_LITE_OBJECTS, self);
+        if (i >= 0) array_delete(INACTIVE_LITE_OBJECTS, i, 1);
+    }
 }

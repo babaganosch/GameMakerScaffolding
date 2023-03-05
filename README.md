@@ -17,7 +17,7 @@ Setup is easy. Just download the template .yyz file and create a new project by 
 * __Terminal module__ - a lightweight debugging console for easy input/output during runtime, with easy to setup commands.
 * __World module__ - worlds, or levels, described as scructs with tilemaps and fast collision checking.
 * __GameObjects__ and __LiteGameObjects__ - the ability to create and diffirentiate between real GameMaker objects and lightweight objects based on structs.
-* __GameController__ module - Controlls object culling, sorting and overall behaviour of the game. GameController events is split up between a couple frames, to even out the workload and improve performance.
+* __GameController module__ - Controlls object culling, sorting and overall behaviour of the game. GameController events is split up between a couple frames, to even out the workload and improve performance.
 
 ---
 # Features
@@ -178,3 +178,62 @@ CURRENT_LEVEL.deactivate();
 CURRENT_LEVEL = AREA.SHOP;
 CURRENT_LEVEL.activate();
 ```
+
+## GameObjects
+All non-GameSystem objects should inherit the parent GameObject class, or any ancestor to that. This will enable the object to update and render only when not outside view, and be controlled by the Game Controller instance. The ancestor Entity of GameObject contains some basic physics, and is will perform collision checks against the current world.
+
+As stated above, GameObjects gets culled and deactivated when outside the camera view, and then re-activated again when back inside the view.
+
+It is also possible to create sub-classes of the LiteGameObject struct. These objects is only structs and more lightweight for the engine to handle. This is a good choice when needing a great amount of objects of something with simple logic. For example, bullets, effects, bugs, whatever. LiteGameObjects are also culled culled by the Game Controller.
+
+```gml
+function Bullet(x, y, hspd, vspd) : LiteGameObject(x, y, spr_bullet) constructor
+{
+    static update = function(delta)
+    {
+        x += hspd * delta; y += vspd * delta;
+        if (x < 0 || x > room_width || y < 0 || y > room_height)
+        {
+            destroy();
+        }
+    }
+}
+
+function SmokeEffect(x, y) : AnimatedLiteGameObject(x, y, spr_smoke) constructor
+{
+    static update = function(delta)
+    {
+        var last_frame = image_index;
+        animate(delta);
+        alpha -= 0.1 * delta;
+        if (image_index < last_frame)
+        {
+            destroy();
+        }
+    }
+}
+```
+
+## Game Controller
+This system object currently controlls the culling and sorting of game objects. The behaviour of the Game Controller is split up between some couple of frames, to even out the load and improve performance. All GameController events is put into UserEvents of the GameController, and expressed as an enum value. It is of course possible to run more then one event per frame, but the important task is balance. You do not want to utilize high percentage of the CPU on one frame, and then 0% on the next frame.
+
+The following example will run GameObject culling on first frame. Sorting the draw order of the objects in the second frame. Culling of the LiteGameObjects in the third frame and finally sorting the draw order of the GameObjects and updating something important on the fourth frame. And then repeat.
+
+```gml
+enum GC_EVENT {
+    OBJECT_CULLING = 0,
+    OBJECT_SORTING = 1,
+    LITE_OBJECT_CULLING = 2,
+    UPDATE_SOMETHING_IMPORTANT = 3
+}
+
+frame_events[0] = [ GC_EVENT.OBJECT_CULLING ];
+frame_events[1] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[2] = [ GC_EVENT.LITE_OBJECT_CULLING ];
+frame_events[3] = [ GC_EVENT.OBJECT_SORTING, GC_EVENT.UPDATE_SOMETHING_IMPORTANT ];
+```
+
+Another thing that the Game Controller does is handle the rendering of all the GameObjects. The rendering order (depth value) is based on the y value of the GameObject. But instead of being drawn on different layers, as with the usual `depth = -y;`, every object are rendered in the same layer and no overhead of creating new layers per y-value is required.
+
+## Notes
+There's __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. I need to figure out a great way to not batch-break the rendering when GameObjects need to render with shaders etc.
