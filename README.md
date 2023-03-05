@@ -184,7 +184,7 @@ All non-GameSystem objects should inherit the parent GameObject class, or any an
 
 As stated above, GameObjects gets culled and deactivated when outside the camera view, and then re-activated again when back inside the view.
 
-It is also possible to create sub-classes of the LiteGameObject struct. These objects is only structs and more lightweight for the engine to handle. This is a good choice when needing a great amount of objects of something with simple logic. For example, bullets, effects, bugs, whatever. LiteGameObjects are also culled culled by the Game Controller.
+It is also possible to create sub-classes of the LiteGameObject struct. These objects is only structs and more lightweight for the engine to handle. This is a good choice when needing a great amount of objects of something with simple logic. For example, bullets, effects, bugs, whatever. LiteGameObjects are also culled by the Game Controller.
 
 ```gml
 function Bullet(x, y, hspd, vspd) : LiteGameObject(x, y, spr_bullet) constructor
@@ -215,7 +215,7 @@ function SmokeEffect(x, y) : AnimatedLiteGameObject(x, y, spr_smoke) constructor
 ```
 
 ## Game Controller
-This system object currently controlls the culling and sorting of game objects. The behaviour of the Game Controller is split up between some couple of frames, to even out the load and improve performance. All GameController events is put into UserEvents of the GameController, and expressed as an enum value. It is of course possible to run more then one event per frame, but the important task is balance. You do not want to utilize high percentage of the CPU on one frame, and then 0% on the next frame.
+This system object currently controls the culling and sorting of game objects. The behaviour of the Game Controller is split up between some couple of frames, to even out the load and improve performance. All GameController events is put into UserEvents of the GameController, and expressed as an enum value. It is of course possible to run more then one event per frame, but the important task is balance. You do not want to utilize high percentage of the CPU on one frame, and then 0% on the next frame.
 
 The following example will run GameObject culling on first frame. Sorting the draw order of the objects in the second frame. Culling of the LiteGameObjects in the third frame and finally sorting the draw order of the GameObjects and updating something important on the fourth frame. And then repeat.
 
@@ -236,4 +236,6 @@ frame_events[3] = [ GC_EVENT.OBJECT_SORTING, GC_EVENT.UPDATE_SOMETHING_IMPORTANT
 Another thing that the Game Controller does is handle the rendering of all the GameObjects. The rendering order (depth value) is based on the y value of the GameObject. But instead of being drawn on different layers, as with the usual `depth = -y;`, every object are rendered in the same layer and no overhead of creating new layers per y-value is required.
 
 ## Notes
-There's __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. I need to figure out a great way to not batch-break the rendering when GameObjects need to render with shaders etc.
+The project also contains some other convenient stuff, like singleton keywords, easy memory cleanup for persistent objects, stress-test macro and easy logging functionality.
+
+There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. I need to figure out a great way to not batch-break the rendering when GameObjects need to render with shaders etc.
