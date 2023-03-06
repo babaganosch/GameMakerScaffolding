@@ -9,15 +9,15 @@
 Setup is easy. Just download the template .yyz file and create a new project by executing it.
 
 ## Feature list
-* __Rendering system__ - double buffered rendering for post fx and shader programs as structs.
-* __Notification system__ - a signal framework for easy observer pattern implementation, and a great way to decouple objects.
-* __Timing module__ - enabling easy implementations of delta time, profiling and an alarm system based on real time instead of frames.
-* __ParticleSystem wrapper__ - for easy particle systems setup and allowing particles to update based on delta time.
-* __Lighting system__ - lightweight 2D light engine with vivid lights based on sprites or shapes.
-* __Terminal module__ - a lightweight debugging console for easy input/output during runtime, with easy to setup commands.
-* __World module__ - worlds, or levels, described as scructs with tilemaps and fast collision checking.
-* __GameObjects__ and __LiteGameObjects__ - the ability to create and diffirentiate between real GameMaker objects and lightweight objects based on structs.
-* __GameController module__ - Controlls object culling, sorting and overall behaviour of the game. GameController events is split up between a couple frames, to even out the workload and improve performance.
+* [__Rendering system__](#rendering) - double buffered rendering for post-fx, and shader programs as structs.
+* [__Notification system__](#notificationsystem) - a signal framework for easy observer pattern implementation, and a great way to decouple objects and make the game logic more event driven.
+* [__Timing module__](#timing-module) - enabling easy implementations of delta time, profiling and an alarm system based on real time instead of frames.
+* [__ParticleSystem wrapper__](#particlesystems) - for easy particle system setup and allowing particles to update based on delta time.
+* [__Lighting system__](#lighting) - lightweight 2D light engine with vivid lights based on sprites or shapes of any size.
+* [__Terminal module__](#terminal) - a lightweight debugging console for easy input/output during runtime, with easy to setup commands.
+* [__World module__](#world-module) - worlds, or levels, described as structs with tilemaps and fast collision checking.
+* [__GameObjects__ and __LiteGameObjects__](#gameobjects) - the ability to create and differentiate between real GameMaker objects and lightweight objects based on structs, all handled by a game controller.
+* [__GameController module__](#game-controller) - controls object culling, sorting and overall behaviour of the game. GameController events are split up between a couple frames, to even out the workload and improve performance.
 
 ---
 # Features
@@ -27,7 +27,7 @@ Instead of directly rendering the application surface to the screen, the applica
 
 A camera is included in the rendering system and easily controllable, and expandable after demand of the user.
 
-Shader programs are saved as structs, cointaining easy utilization and access to uniforms and samplers.
+Shader programs are saved as structs, containing easy utilization and access to uniforms and samplers.
 
 ## NotificationSystem
 This is a lightweight signal framework and a great way to decouple objects, and making the game logic more event driven. [Link to original repo.](https://github.com/babaganosch/NotificationSystem) This is an old project of mine, but still very relevant.
@@ -43,7 +43,7 @@ receiver.add("Monster killed", function() {
 });
 ```
 ```gml
-// Code in a monsters destroy event
+// Destroy event for a monster
 broadcast("Monster killed");
 ```
 The messages do not have to be strings. Enums or numbers work as well, and are preferred performance wise.
@@ -53,7 +53,7 @@ enum MESSAGES {
     GAME_OVER,
     PLAYER_JUMP,
     ...
-}
+};
 
 receiver.add(MESSAGES.MONSTER_KILLED, function(score) {
     increase_score(score);
@@ -114,7 +114,7 @@ emitter.set_stream(flames, 10);
 ## Lighting
 GameMaker Scaffolding includes a lightweight 2D lighting system. [Link to original repo.](https://github.com/babaganosch/LightingSystem2D) This is an old project of mine, a remake of the lighting system <a href="https://github.com/niksudan/prettylight">prettylight</a> made by <a href="https://github.com/niksudan">@niksudan</a>.
 
-If needed, one can construct a light sprite of any size runtime with `ConstructLightSprite()`. (__If used, this should always be done once at bootup and not during gameplay__). This is good for experimentation, but preferably, the sprites should not be created runtime. The sprites can be of any shape or size. For device compatibility however, try to keep the dimensions square and the sizes in a power of two. For example, 16x16, 32x32..
+If needed, one can construct a light sprite of any size runtime with `ConstructLightSprite()`. ___(If used, this should always be done once at bootup and not during gameplay)___. This is good for experimentation, but preferably, the sprites should not be created runtime. The sprites can be of any shape or size. For device compatibility however, try to keep the dimensions square and the sizes in a power of two. For example, 16x16, 32x32..
 
 ```gml
 spr_light = ConstructLightSprite(128);
@@ -247,9 +247,11 @@ Another thing that the Game Controller does is handle the rendering of all the G
   <img src="https://raw.githubusercontent.com/babaganosch/open_storage/master/culling_0.gif">
 </p>
 
-## Notes
+# Notes
 The project also contains some other convenient stuff, like singleton keywords, easy memory cleanup for persistent objects, stress-test macro and easy logging functionality.
 
 There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. Game size is currently hardcoded in a very ugly way. I'm not sure but I suspect rendering objects with shaders will cause a lot of unnecessary batch breaking. The code could be commented much better as well.
 
-Light system should probably be implemented as rgba16f surfaces and blurring shaders could be dropped (Thanks <a href="https://twitter.com/XorDev/status/1632159728510857216?s=20">XOR</a> for the idea), when available on master release of GMS.
+Light system should probably be implemented as rgba16f surfaces and blurring shaders could be dropped (Thank you <a href="https://twitter.com/XorDev/status/1632159728510857216">XOR</a> for the idea), when available on the stable release of GMS. On top of this, I would also try to implement shadow casting to the light system.
+
+Want to support me? <a href="https://ko-fi.com/larsandersson">Buy me a coffee or whatever</a>
