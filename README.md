@@ -252,4 +252,4 @@ The project also contains some other convenient stuff, like singleton keywords, 
 
 There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. Game size is currently hardcoded in a very ugly way. I'm not sure but I suspect rendering objects with shaders will cause a lot of unnecessary batch breaking. The code could be commented much better as well.
 
-Light system should probably be implemented as rgba16f surfaces and blurring shaders could be dropped, when available on master release of GMS.
+Light system should probably be implemented as rgba16f surfaces and blurring shaders could be dropped (Thanks <a href="https://twitter.com/XorDev/status/1632159728510857216?s=20">XOR</a> for the idea), when available on master release of GMS.
