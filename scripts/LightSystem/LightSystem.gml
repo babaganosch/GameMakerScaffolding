@@ -40,6 +40,9 @@ function CleanupLightSystem(active_only) {
     global.__light_system__.clean(active_only);
 }
 
+function SetSurfaceFormat(format) {
+    global._surface_format = format;
+}
 
 /////////////////////////////  SYSTEM  //////////////////////////////
 
@@ -50,6 +53,7 @@ function LightingSystem() constructor {
     _blur = true;
     _lightmap = -1;
     _blurmap = -1;
+    _surface_format = surface_format_is_supported(surface_rgba16float) ? surface_rgba16float : surface_rgba8unorm;
 
     _ambient_color = make_color_rgb(1, 16, 32);
     _ambient_alpha = 0.9;
@@ -79,7 +83,7 @@ function LightingSystem() constructor {
         
         // Prepare lightmap
         if (!surface_exists(_lightmap)) {
-            _lightmap = surface_create(camera_get_view_width(cam), camera_get_view_height(cam));
+            _lightmap = surface_create(camera_get_view_width(cam), camera_get_view_height(cam), _surface_format);
         }
         
         surface_set_target(_lightmap);
@@ -147,7 +151,7 @@ function LightingSystem() constructor {
         }
 
         // Draw standard lightmap
-        gpu_set_blendmode_ext(bm_dest_color, bm_src_color);
+        gpu_set_blendmode_ext(bm_dest_color, bm_zero);
         draw_surface(_lightmap, camera_get_view_x(cam), camera_get_view_y(cam));
         gpu_set_blendmode(bm_normal);
             
@@ -331,6 +335,7 @@ if (false) { // CLEAR "ONLY REFERENCED ONCE" WARNINGS
     DrawLights();
     UpdateLights();
     CleanupLightSystem(false);
+    SetSurfaceFormat(surface_rgba8unorm);
     var a = new LightSource(0, 0);
     delete a;
 }

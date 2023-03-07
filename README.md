@@ -1,4 +1,4 @@
-<h1 align="center">GMS 2.3+ GameMaker Scaffolding | v1.0.0</h1>
+<h1 align="center">GMS 2.3+ GameMaker Scaffolding | v1.0.1</h1>
 <p align="center"><a href="https://twitter.com/Babaganosch">@babaganosch</a></p>
 <p align="center">Download: <a href="https://github.com/babaganosch/GameMakerScaffolding/releases/download/v1.0.0/GameMakerScaffolding.yyz">latest</a></p>
 
@@ -247,11 +247,13 @@ Another thing that the Game Controller does is handle the rendering of all the G
   <img src="https://raw.githubusercontent.com/babaganosch/open_storage/master/culling_0.gif">
 </p>
 
+# Changelog
+**v1.0.1**
+* Utilize 16bit color channels for light engine if available
+
 # Notes
 The project also contains some other convenient stuff, like singleton keywords, easy memory cleanup for persistent objects, stress-test macro and easy logging functionality.
 
-There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. Game size is currently hardcoded in a very ugly way. I'm not sure but I suspect rendering objects with shaders will cause a lot of unnecessary batch breaking. The code could be commented much better as well.
-
-Light system should probably be implemented as rgba16f surfaces and blurring shaders could be dropped (Thank you <a href="https://twitter.com/XorDev/status/1632159728510857216">XOR</a> for the idea), when available on the stable release of GMS. On top of this, I would also try to implement shadow casting to the light system.
+There is __A LOT__ of areas of improvement in this project. Most of the modules, and code, is simply copy-pasted from my prior projects. For example, I think that the terminal module should be reworked from scratch. Game size is currently hardcoded in a very ugly way. I'm not sure but I suspect rendering objects with shaders will cause a lot of unnecessary batch breaking. The code could be commented much better as well. I would also try to implement shadow casting to the light system.
 
 Want to support me? <a href="https://ko-fi.com/larsandersson">Buy me a coffee or whatever</a>
