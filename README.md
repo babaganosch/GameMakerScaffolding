@@ -1,6 +1,6 @@
 <h1 align="center">GMS 2.3+ GameMaker Scaffolding | v1.0.1</h1>
 <p align="center"><a href="https://twitter.com/Babaganosch">@babaganosch</a></p>
-<p align="center">Download: <a href="https://github.com/babaganosch/GameMakerScaffolding/releases/download/v1.0.0/GameMakerScaffolding.yyz">latest</a></p>
+<p align="center">Download: <a href="https://github.com/babaganosch/GameMakerScaffolding/releases/download/v1.0.1/GameMakerScaffolding.yyz">latest</a></p>
 
 ---
 
