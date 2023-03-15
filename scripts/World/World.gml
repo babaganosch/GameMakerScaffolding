@@ -70,7 +70,7 @@ function World(tileset, w, h) constructor
         x = x div CELL_W;
         y = y div CELL_H;
         DIRECT_LOOKUP_SAFETY;
-        return !(_data[# x, y - 1] % 2) || !(_data[# x, y] % 2);
+        return !(_data[# x, y - 1] & 1) || !(_data[# x, y] & 1);
     }
     
     static check_collision_square = function(x1, y1, x2, y2)
@@ -79,8 +79,8 @@ function World(tileset, w, h) constructor
         x2 = x2 div CELL_W; y2 = y2 div CELL_H;
         y1 -= 1;
         SQUARE_LOOKUP_SAFETY;
-        return !(_data[# x1, y1] % 2) || !(_data[# x2, y2] % 2) ||
-               !(_data[# x1, y2] % 2) || !(_data[# x2, y1] % 2);
+        return !(_data[# x1, y1] & 1) || !(_data[# x2, y2] & 1) ||
+               !(_data[# x1, y2] & 1) || !(_data[# x2, y1] & 1);
     }
     
     static get_cell_data = function(x, y)
@@ -101,7 +101,7 @@ function World(tileset, w, h) constructor
     static check_collision_point_raw = function(x, y)
     {
         DIRECT_LOOKUP_SAFETY;
-        return !(_data[# x, y] % 2);
+        return !(_data[# x, y] & 1);
     }
     
     static render = function(x1, y1, x2, y2) {
@@ -129,10 +129,10 @@ function World(tileset, w, h) constructor
                     } break;
                     default: {
                         // WALLS ( data % 2 to check if void/wall bit is set, invert to check NOT void/wall )
-                        var _north_tile = !(_data[# _x, _y-1] % 2) * 1;
-                        var _west_tile  = !(_data[# _x-1, _y] % 2) * 2;
-                        var _east_tile  = !(_data[# _x+1, _y] % 2) * 4;
-                        var _south_tile = !(_data[# _x, _y+1] % 2) * 8;
+                        var _north_tile = !(_data[# _x, _y-1] & 1) * 1;
+                        var _west_tile  = !(_data[# _x-1, _y] & 1) * 2;
+                        var _east_tile  = !(_data[# _x+1, _y] & 1) * 4;
+                        var _south_tile = !(_data[# _x, _y+1] & 1) * 8;
                         var _tile_index = (_north_tile + _west_tile + _east_tile + _south_tile + 1) + variation;
                         _wall_tm.set_tile(_x, _y, _tile_index);
                     } break;
