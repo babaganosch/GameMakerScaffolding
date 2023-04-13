@@ -2,12 +2,12 @@ IS_SINGLETON
 room_set_persistent(room, !DEBUG_STRESS_TEST);
 sprite_index = -1;
 receiver  = new Receiver(["system"]);
+object_z_sort_shader = new ShaderProgram(shd_object_z_sort);
 
 /* Make sure this enum corresponds to the User Event numbers (16 events max) */
 enum GC_EVENT {
     OBJECT_CULLING = 0,
-    OBJECT_SORTING = 1,
-    LITE_OBJECT_CULLING = 2
+    LITE_OBJECT_CULLING = 1
 }
 
 /** Game Controller Events
@@ -20,27 +20,26 @@ enum GC_EVENT {
  * MacBook Pro 13" 2018 Intel
  *
  * Culling: 6-10 ms, Avg ~7ms
- * Sorting: 4-10 ms, Avg ~5ms
  */
 global.frame_index  = 0;
 frame_events = [];
 frame_events[0 ] = [ GC_EVENT.OBJECT_CULLING ];
-frame_events[1 ] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[1 ] = [ ];
 frame_events[2 ] = [ GC_EVENT.LITE_OBJECT_CULLING ];
-frame_events[3 ] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[3 ] = [ ];
 frame_events[4 ] = [ GC_EVENT.OBJECT_CULLING ];
-frame_events[5 ] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[5 ] = [ ];
 frame_events[6 ] = [ GC_EVENT.LITE_OBJECT_CULLING ];
-frame_events[7 ] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[7 ] = [ ];
 frame_events[8 ] = [ GC_EVENT.OBJECT_CULLING ];
-frame_events[9 ] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[9 ] = [ ];
 frame_events[10] = [ GC_EVENT.LITE_OBJECT_CULLING ];
-frame_events[11] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[11] = [ ];
 frame_events[12] = [ GC_EVENT.OBJECT_CULLING ];
-frame_events[13] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[13] = [ ];
 frame_events[14] = [ GC_EVENT.LITE_OBJECT_CULLING ];
-frame_events[15] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[15] = [ ];
 frame_events[16] = [ GC_EVENT.OBJECT_CULLING ];
-frame_events[17] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[17] = [ ];
 frame_events[18] = [ GC_EVENT.LITE_OBJECT_CULLING ];
-frame_events[19] = [ GC_EVENT.OBJECT_SORTING ];
+frame_events[19] = [ ];

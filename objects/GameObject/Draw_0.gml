@@ -1,1 +1,1 @@
-/* Empty */
+draw_self();

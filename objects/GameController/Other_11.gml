@@ -1,13 +1,29 @@
-/// @desc OBJECT_SORTING
+/// @desc LITE_OBJECT_CULLING
 
-/* Sort objects by Y-value
- * Currently sorts primarly on Y-value, and secondarily
- * on object ID. This is very unoptimal and should
- * probably be looked over if performance is an issue.
- */
-var active_game_objects = ACTIVE_GAME_OBJECTS;
-array_sort(active_game_objects, function(e1, e2) {
-    var order = e1.y - e2.y;
-    if (order == 0) order = e1.sorting_identifier - e2.sorting_identifier;
-    return order;
-});
+// Check square
+var cs = CAMERA.active_zone;
+
+var inactive_game_objects = INACTIVE_LITE_OBJECTS;
+var active_game_objects   = ACTIVE_LITE_OBJECTS;
+
+// Re-activate deactivated objects that's inside CS again
+for (var i = 0; i < array_length(inactive_game_objects); i++)
+{
+    var ins = inactive_game_objects[i];
+    if (point_in_rectangle(ins.x, ins.y, cs[X1], cs[Y1], cs[X2], cs[Y2]))
+    {
+        array_push(active_game_objects, ins);
+        array_delete(inactive_game_objects, i--, 1);
+    }
+}
+
+// De-activate objects that's ouside CS
+for (var i = 0; i < array_length(active_game_objects); i++)
+{
+    var ins = active_game_objects[i];
+    if (!point_in_rectangle(ins.x, ins.y, cs[X1], cs[Y1], cs[X2], cs[Y2]))
+    {
+        array_push(inactive_game_objects, ins);
+        array_delete(active_game_objects, i--, 1);
+    }
+}

@@ -3,6 +3,9 @@ sprite_index = -1;
 receiver = new Receiver(["system"]);
 
 application_surface_draw_enable(false);
+gpu_set_zwriteenable(true);
+gpu_set_ztestenable(true);
+
 gpu_set_texfilter(false);
 gpu_set_texrepeat(false);
 

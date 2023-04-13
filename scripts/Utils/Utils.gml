@@ -7,6 +7,8 @@ time_source_units_frames, function() { game_restart(); print("Iteration: ", glob
 global.game_version = string(VERSION_MAJOR)+"."+string(VERSION_MINOR)+"."+string(VERSION_PATCH);
 if (DEBUG) { global.game_version += "-DEBUG"; } else { randomize(); }
 
+#macro OBJECT_Z_SORT ((room_height - bbox_bottom) / room_height * 255)
+
 #macro LOG __empty_func
 #macro Debug:LOG __log_func
 
@@ -18,6 +20,8 @@ if (DEBUG) { global.game_version += "-DEBUG"; } else { randomize(); }
 
 #macro printf __empty_func
 #macro Debug:printf show_debug_message
+
+function enocde_image_blend(a, b, c) { gml_pragma("forceinline"); image_blend = make_color_rgb(a, b, c); }
 
 function __empty_func() { gml_pragma("forceinline"); return; __empty_func(argument[0]); }
 
