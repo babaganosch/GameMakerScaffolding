@@ -2,7 +2,9 @@ IS_SINGLETON
 room_set_persistent(room, !DEBUG_STRESS_TEST);
 sprite_index = -1;
 receiver  = new Receiver(["system"]);
+
 object_z_sort_shader = new ShaderProgram(shd_object_z_sort);
+object_z_sort_shader.add_uniform("room_height", U_TYPE.FLOAT);
 
 /* Make sure this enum corresponds to the User Event numbers (16 events max) */
 enum GC_EVENT {

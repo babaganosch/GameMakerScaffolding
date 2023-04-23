@@ -20,7 +20,6 @@ function AnimatedLiteGameObject(x_start, y_start, sprite) : LiteGameObject(x_sta
     xscale = 1;
     yscale = 1;
     rotation = 0;
-    blend = c_white;
     alpha = 1;
     
     static set_sprite = function(spr) { sprite_index = spr; image_number = sprite_get_number(spr); }
@@ -30,7 +29,6 @@ function AnimatedLiteGameObject(x_start, y_start, sprite) : LiteGameObject(x_sta
     static set_yscale = function(num) { yscale = num; }
     static set_scale = function(num) { xscale = num; yscale = num; }
     static set_rotation = function(num) { rotation = num; }
-    static set_blend = function(col) { blend = col; }
     static set_alpha = function(num) { alpha = num; }
     
     static animate = function(delta)
@@ -41,7 +39,7 @@ function AnimatedLiteGameObject(x_start, y_start, sprite) : LiteGameObject(x_sta
     static draw = function()
     {
         if (sprite_index < 0) return;
-        draw_sprite_ext(sprite_index, image_index, x, y, xscale, yscale, rotation, blend, alpha);
+        draw_sprite_ext(sprite_index, image_index, x, y, xscale, yscale, rotation, zdata, alpha);
     }
 }
 
@@ -53,16 +51,18 @@ function LiteGameObject(start_x, start_y, sprite) constructor
     sx = x;
     sy = y;
     sprite_index = sprite;
+	zdata = c_white;
     array_push(ACTIVE_LITE_OBJECTS, self);
     
     static set_sprite = function(spr) { sprite_index = spr; }
+	static zsort = function() { zdata = make_color_rgb(y & 255, y div 256, 0); }
     
     // Override the update and draw when implementing new LiteGameObject ancestor, if needed.
     static update = function(delta) { x = sx + cos(current_time * 0.005) * 8; y = sy + sin(current_time * 0.005) * 8; }
     static draw = function()
     {
         if (sprite_index < 0) return;
-        draw_sprite(sprite_index, 0, x, y);
+        draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, zdata, 1);
     }
     
     static destroy = function()

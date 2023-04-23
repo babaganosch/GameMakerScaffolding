@@ -57,7 +57,7 @@ var _z = 10;
 global.TEST = [];
 for (var _x = 0; _x < (room_width div _z); _x++) {
     for (var _y = 0; _y < (room_height div _z); _y++) {
-        var a = new LiteGameObject(_x * _z, _y * _z, spr_debug_box_tny);
+        var a = new LiteGameObject(_x * _z, _y * _z, spr_test_ball);
         _num++;
     }
 }

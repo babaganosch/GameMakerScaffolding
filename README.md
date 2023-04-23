@@ -1,4 +1,4 @@
-<h1 align="center">GMS 2.3+ GameMaker Scaffolding | v1.1.1</h1>
+<h1 align="center">GMS 2.3+ GameMaker Scaffolding | v1.1.2</h1>
 <p align="center"><a href="https://twitter.com/Babaganosch">@babaganosch</a></p>
 <p align="center">Download: <a href="https://github.com/babaganosch/GameMakerScaffolding/releases/latest">latest</a></p>
 
@@ -248,6 +248,9 @@ Another thing that the Game Controller does is handle the rendering of all the G
 </p>
 
 # Changelog
+**v1.1.2**
+* Two color channels for zsort.. Still something wonky about the depth though.
+
 **v1.1.1**
 * Discard non-opaque fragments in the z-sort shader.
 
