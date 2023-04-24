@@ -48,21 +48,17 @@ function LiteGameObject(start_x, start_y, sprite) constructor
 {
     x = start_x;
     y = start_y;
-    sx = x;
-    sy = y;
     sprite_index = sprite;
-	zdata = c_white;
     array_push(ACTIVE_LITE_OBJECTS, self);
     
     static set_sprite = function(spr) { sprite_index = spr; }
-	static zsort = function() { zdata = make_color_rgb(y & 255, y div 256, 0); }
     
     // Override the update and draw when implementing new LiteGameObject ancestor, if needed.
-    static update = function(delta) { x = sx + cos(current_time * 0.005) * 8; y = sy + sin(current_time * 0.005) * 8; }
+    static update = function(delta) { }
     static draw = function()
     {
         if (sprite_index < 0) return;
-        draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, zdata, 1);
+        draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, c_white, 1.0);
     }
     
     static destroy = function()

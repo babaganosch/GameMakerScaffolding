@@ -75,7 +75,7 @@
     {"id":{"name":"ParticleSystem","path":"scripts/ParticleSystem/ParticleSystem.yy",},},
     {"id":{"name":"Camera","path":"scripts/Camera/Camera.yy",},},
     {"id":{"name":"spr_ico_parent","path":"sprites/spr_ico_parent/spr_ico_parent.yy",},},
-    {"id":{"name":"shd_object_z_sort","path":"shaders/shd_object_z_sort/shd_object_z_sort.yy",},},
+    {"id":{"name":"shd_zsort","path":"shaders/shd_zsort/shd_zsort.yy",},},
     {"id":{"name":"DebugBall","path":"objects/DebugBall/DebugBall.yy",},},
     {"id":{"name":"GameController","path":"objects/GameController/GameController.yy",},},
     {"id":{"name":"spr_tmap_test0","path":"sprites/spr_tmap_test0/spr_tmap_test0.yy",},},

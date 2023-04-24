@@ -42,7 +42,7 @@
     {"name":"World","order":1,"path":"scripts/World/World.yy",},
     {"name":"Camera","order":2,"path":"scripts/Camera/Camera.yy",},
     {"name":"spr_ico_parent","order":2,"path":"sprites/spr_ico_parent/spr_ico_parent.yy",},
-    {"name":"shd_object_z_sort","order":5,"path":"shaders/shd_object_z_sort/shd_object_z_sort.yy",},
+    {"name":"shd_zsort","order":5,"path":"shaders/shd_zsort/shd_zsort.yy",},
     {"name":"DebugBall","order":2,"path":"objects/DebugBall/DebugBall.yy",},
     {"name":"GameController","order":3,"path":"objects/GameController/GameController.yy",},
     {"name":"spr_ico_warning","order":3,"path":"sprites/spr_ico_warning/spr_ico_warning.yy",},
