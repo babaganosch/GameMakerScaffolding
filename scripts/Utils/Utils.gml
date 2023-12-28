@@ -1,6 +1,10 @@
 #macro PERSISTENT_CLEANUP { persistent = false; if(!variable_instance_get(self, "__clean__")) \
 { variable_instance_set(self, "__clean__", true); } else { return; } }
 
+// feather disable GM2047
+// feather disable GM2017
+// feather disable GM1038
+
 if (DEBUG_STRESS_TEST) { global.game_iteration = 0; time_source_start(time_source_create(time_source_game, DEBUG_STRESS_TEST_FRAMES_TILL_REBOOT, 
 time_source_units_frames, function() { game_restart(); print("Iteration: ", global.game_iteration++); }, [], -1)); }
 
@@ -19,34 +23,36 @@ if (DEBUG) { global.game_version += "-DEBUG"; } else { randomize(); }
 #macro printf __empty_func
 #macro Debug:printf show_debug_message
 
-function enocde_image_blend(a, b, c) { gml_pragma("forceinline"); image_blend = make_color_rgb(a, b, c); }
+function __empty_func(_dump) {
+	return; for (var _i = 0; _i < argument_count; ++_i) { var a = argument[_i]; }
+}
 
-function __empty_func() { gml_pragma("forceinline"); return; __empty_func(argument[0]); }
+function enocde_image_blend(_a, _b, _c) { gml_pragma("forceinline"); image_blend = make_color_rgb(_a, _b, _c); }
 
 function __log_func() {
     gml_pragma("forceinline");
-    var str = "";
-    for (var i = 0; i < argument_count; ++i)
+    var _str = "";
+    for (var _i = 0; _i < argument_count; ++_i)
     {
-        str += " " + string(argument[i]);
+        _str += " " + string(argument[_i]);
     }
-    show_debug_message("[{0} {1}]: {2}", object_get_name(object_index), id, str);
+    show_debug_message("[{0} {1}]: {2}", object_get_name(object_index), id, _str);
 }
 
 function __log_terminal_func() {
     gml_pragma("forceinline");
-    var str = "";
-    for (var i = 0; i < argument_count; ++i)
+    var _str = "";
+    for (var _i = 0; _i < argument_count; ++_i)
     {
-        str += " " + string(argument[i]);
+        _str += " " + string(argument[_i]);
     }
-    Terminal.Print(new Terminal.Prompt(
-        Terminal.c_success, string("[{0} {1}]:{2}", object_get_name(object_index), id, str)
+    Terminal.term_print(new Terminal.prompt(
+        Terminal.c_success, string("[{0} {1}]:{2}", object_get_name(object_index), id, _str)
     ));
 }
 
-#macro IS_SINGLETON { if (!AssertSingleton()) return; }
-function AssertSingleton() 
+#macro IS_SINGLETON { if (!assert_singleton()) return; }
+function assert_singleton() 
 {
 	if (instance_number(object_index) > 1) 
     {
@@ -56,86 +62,72 @@ function AssertSingleton()
 	return true;
 }
 
-function seconds(amount) {
-    return game_get_speed(gamespeed_fps) * amount;
+function seconds(_amount) {
+    return game_get_speed(gamespeed_fps) * _amount;
 }
 
-function milliseconds(amount) {
-    return game_get_speed(gamespeed_fps) * (amount / 1000);
+function milliseconds(_amount) {
+    return game_get_speed(gamespeed_fps) * (_amount / 1000);
 }
 
 function __print()
 {
 	gml_pragma("forceinline");
-    var str = "";
-    for (var i = 0; i < argument_count; ++i)
+    var _str = "";
+    for (var _i = 0; _i < argument_count; ++_i)
     {
-        str += " " + string(argument[i]);
+        _str += " " + string(argument[_i]);
     }
-    show_debug_message(str);
-    return str;
+    show_debug_message(_str);
+    return _str;
 }
 
-function instance_create(instance, x, y, where)
+function instance_create(_instance, _x, _y, _where)
 {
 	gml_pragma("forceinline");
-    var ins = -1;
-    if (!is_undefined(where))
+    var _ins = -1;
+    if (!is_undefined(_where))
     {
         if (is_string(argument[3])) 
-        	ins = instance_create_layer(x, y, argument[3], instance);
+        	_ins = instance_create_layer(_x, _y, argument[3], _instance);
         else if (is_numeric(argument[3]))
-        	ins = instance_create_depth(x, y, argument[3], instance);
+        	_ins = instance_create_depth(_x, _y, argument[3], _instance);
         else throw "Invalid depth or layer name";
     }
-    else ins = instance_create_layer(x, y, "Instances", instance);
-    return ins;
+    else _ins = instance_create_layer(_x, _y, "Instances", _instance);
+    return _ins;
 }
 
-function approach(a, b, c)
+function approach(_a, _b, _c)
 {
 	gml_pragma("forceinline");
-    if (a < b) return min(a + c, b); 
-    else return max(a - c, b);
+    if (_a < _b) return min(_a + _c, _b); 
+    else return max(_a - _c, _b);
 }
 
-function smooth_approach(current, target, speed) {
+function smooth_approach(_current, _target, speed) {
 	gml_pragma("forceinline");
-	var diff = target-current;
-	if ( abs(diff) < 0.0005 ) return target;
-	else return current+sign(diff)*abs(diff)*speed;
+	var _diff = _target-_current;
+	if ( abs(_diff) < 0.0005 ) return _target;
+	else return _current+sign(_diff)*abs(_diff)*speed;
 }
 
-function plusminus(value) {
+function plusminus(_value) {
     gml_pragma("forceinline");
-    return random_range(-value, value);
+    return random_range(-_value, _value);
 }
 
-function iplusminus(value) {
+function iplusminus(_value) {
     gml_pragma("forceinline");
-    return irandom_range(-value, value);
+    return irandom_range(-_value, _value);
 }
 
-function ds_list_to_array(ds_list) {
+function ds_list_to_array(_ds_list) {
     var _array = [];
-    var _list_size = ds_list_size(ds_list);
+    var _list_size = ds_list_size(_ds_list);
     for (var _i = 0; _i < _list_size; ++_i)
     {
-        array_push(_array, ds_list[|_i]);  
+        array_push(_array, _ds_list[|_i]);  
     }
     return _array;
-}
-
-if (false)
-{   // REMOVE WARNINGS
-    LOG();
-    __log_function();
-    seconds(0);
-    milliseconds(0);
-    print();
-    __print();
-    printf();
-    plusminus(0);
-    iplusminus(0);
-    ds_list_to_array(0);
 }

@@ -1,1 +1,1 @@
-DrawLights();
+draw_lights();

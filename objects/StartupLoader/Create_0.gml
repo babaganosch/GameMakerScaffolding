@@ -5,16 +5,10 @@ print();
 print("-|   Starting Game   |-");
 print();
 
-/* TODO: Calc following based on aspect ratio.. or anything! */
-var w = display_get_width()  div 4;
-var h = display_get_height() div 4;
-
-global.game_width  = w; // 420 // 384 // 192
-global.game_height = h; // 262 // 216 // 108
-global.zoom        = 3; // 3   // 3   // 6
-
-global.screen_width  = global.game_width * global.zoom;
-global.screen_height = global.game_height * global.zoom;
+global.zoom = 4;
+var _w = window_get_width() div global.zoom;
+var _h = window_get_height() div global.zoom;
+global.game_size = [ _w, _h ];
 
 instance_create(GameController, 0, 0, 0);
 instance_create(InputHandler, 0, 0, 0);

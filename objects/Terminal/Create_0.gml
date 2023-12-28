@@ -18,12 +18,12 @@ c_time = 0xBFD9F5;
 c_error = 0x1C34E8;
 c_success = 0x6DB38B;
 
-var font_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+var _font_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
                       "abcdefghijklmnopqrstuvwxyz" +
                       "1234567890" +
                       "?!/\\-_+=*.,:;~()[]{}^⌄<>" +
                       "'\"@%&|#$";
-terminal_font = font_add_sprite_ext(spr_font_terminal, font_characters, true, 1);
+terminal_font = font_add_sprite_ext(spr_font_terminal, _font_characters, true, 1);
 
 history = [];
 prompt_history = [];
@@ -32,7 +32,7 @@ history_index = -1;
 
 sys_alarms.add(milliseconds(500), function() {
     input_marker_flag = !input_marker_flag;
-    if (active) RenderTerminalSurface();
+    if (active) render_terminal_surface();
 }, true);
 
 bot_y = display_get_gui_height() div 3;
@@ -43,59 +43,59 @@ surface = surface_create(display_get_gui_width(), bot_y);
 pane_anchor_y = -bot_y;
 open_close_speed = bot_y div 10;
 
-function Prompt(color, text_string) constructor
+function prompt(_color, _text_string) constructor
 {
-    _timestamp = date_current_datetime();
-    _timestamp_string = string("[{0}:{1}] ", 
-        string_replace(string_format(date_get_hour(_timestamp), 2, 0), " ", "0"), 
-        string_replace(string_format(date_get_minute(_timestamp), 2, 0), " ", "0"));
-    _color = color;
-    _string = text_string;
+    timestamp = date_current_datetime();
+    timestamp_string = string("[{0}:{1}] ", 
+        string_replace(string_format(date_get_hour(timestamp), 2, 0), " ", "0"), 
+        string_replace(string_format(date_get_minute(timestamp), 2, 0), " ", "0"));
+    color = _color;
+    str = _text_string;
 }
 
-function Print(prompt)
+function term_print(_prompt)
 {
-    array_insert(history, 0, prompt);
+    array_insert(history, 0, _prompt);
     if (array_length(history) > history_max) 
         array_delete(history, history_max, 1);
 }
 
-function Execute(prompt)
+function execute(_prompt)
 {
-    Print(prompt);
-    var list = string_split(prompt._string, " ", true, 999);
-    if (array_length(list) > 0) {
-        var command = variable_struct_get(commands, string_lower(list[0]));
-        if (!is_undefined(command))
+    term_print(_prompt);
+    var _list = string_split(_prompt.str, " ", true, 999);
+    if (array_length(_list) > 0) {
+        var _command = variable_struct_get(commands, string_lower(_list[0]));
+        if (!is_undefined(_command))
         {
             try {
-                command(list);
-            } catch (e) { 
-                Print(new Prompt(c_error, e.message ));
+                _command(_list);
+            } catch (_e) { 
+                term_print(new prompt(c_error, _e.message ));
             }
         }
     }
-    if (string_trim(prompt._string) != "")
+    if (string_trim(_prompt.str) != "")
     {
-        array_insert(prompt_history, 0, prompt);
+        array_insert(prompt_history, 0, _prompt);
         if (array_length(prompt_history) > history_max) 
             array_delete(prompt_history, history_max, 1);
     }
 }
 
-function RenderTerminalHistoryPrompt(yy, cmnd)
+function render_terminal_history_prompt(_yy, _cmnd)
 {
-    var _timestamp_len = string_width(cmnd._timestamp_string);
-    var xx = 5;
+    var _timestamp_len = string_width(_cmnd.timestamp_string);
+    var _xx = 5;
     draw_set_color(c_time);
-    draw_text(xx, yy, cmnd._timestamp_string);
-    xx += _timestamp_len;
-    draw_set_color(cmnd._color);
-    draw_text(xx, yy, cmnd._string);
+    draw_text(_xx, _yy, _cmnd.timestamp_string);
+    _xx += _timestamp_len;
+    draw_set_color(_cmnd.color);
+    draw_text(_xx, _yy, _cmnd.str);
     draw_set_color(c_white);
 }
 
-function RenderTerminalSurface()
+function render_terminal_surface()
 {
     if (!surface_exists(surface)) surface = surface_create(display_get_gui_width(), bot_y);
     surface_set_target(surface);
@@ -120,18 +120,18 @@ function RenderTerminalSurface()
     
     if (input_marker_flag) 
     {
-        var substr = "";
-        for (var i = 0; i < input_index; ++i) {
-            substr += string_char_at(input_string, i+1);
+        var _substr = "";
+        for (var _i = 0; _i < input_index; ++_i) {
+            _substr += string_char_at(input_string, _i+1);
         }
-        draw_text(input_xanchor + string_width(substr) - 1, bot_y, "|");
+        draw_text(input_xanchor + string_width(_substr) - 1, bot_y, "|");
     }
     
-    for (var i = 0; i < array_length(history); ++i)
+    for (var _i = 0; _i < array_length(history); ++_i)
     {
-        var yy = (i+1) * letter_h;
-        if ( yy > bot_y) break;
-        RenderTerminalHistoryPrompt(bot_y - yy, history[i]);
+        var _yy = (_i+1) * letter_h;
+        if ( _yy > bot_y) break;
+        render_terminal_history_prompt(bot_y - _yy, history[_i]);
     }
 
     /// RESET
@@ -148,42 +148,42 @@ receiver.on(MESSAGES.GUI_SIZE_CHANGED, function() {
     bot_y = display_get_gui_height() div 3;
     if (surface_exists(surface)) surface_free(surface);
     surface = surface_create(display_get_gui_width(), bot_y);
-    RenderTerminalSurface();
+    render_terminal_surface();
 });
 
-RenderTerminalSurface();
+render_terminal_surface();
 
 commands = {
-    "echo": function(args) {
-        var str = "> ";
-        for (var i = 1; i < array_length(args); ++i)
+    "echo": function(_args) {
+        var _str = "> ";
+        for (var _i = 1; _i < array_length(_args); ++_i)
         {
-            str += args[i] + " ";
+            _str += _args[_i] + " ";
         }
-        Terminal.Print(new Terminal.Prompt(c_teal, str));
+        Terminal.term_print(new Terminal.prompt(c_teal, _str));
     },
     "clear": function() {
         Terminal.history = [];
     },
-    "fullscreen": function(args) {
-        var flag = !window_get_fullscreen();
-        if (array_length(args) > 1)
+    "fullscreen": function(_args) {
+        var _flag = !window_get_fullscreen();
+        if (array_length(_args) > 1)
         {
-            switch (string_lower(args[1])) {
+            switch (string_lower(_args[1])) {
                 case ("1"): 
                 case ("true"): 
                 case ("on"): {
-                    flag = true;
+                    _flag = true;
                 } break;
                 case ("0"):
                 case ("false"):
                 case ("off"): {
-                    flag = false;
+                    _flag = false;
                 } break;
             }
         }
-        window_set_fullscreen(flag);
-        Terminal.Print(new Terminal.Prompt(c_lime, string("Fullscreen {0}", flag)));
+        window_set_fullscreen(_flag);
+        Terminal.term_print(new Terminal.prompt(c_lime, string("Fullscreen {0}", _flag)));
     },
     "restart": function() {
         game_restart();
@@ -191,18 +191,18 @@ commands = {
     "exit": function() {
         game_end();
     },
-    "spawn": function(args) {
-        var xx = mouse_x, yy = mouse_y;
-        instance_create(asset_get_index(args[1]), xx, yy, 0); 
-        var str = string("{0} spawned at {1} {2}", args[1], xx, yy);
-        Terminal.Print(new Terminal.Prompt(Terminal.c_success, str));
+    "spawn": function(_args) {
+        var _xx = mouse_x, _yy = mouse_y;
+        instance_create(asset_get_index(_args[1]), _xx, _yy, 0); 
+        var _str = string("{0} spawned at {1} {2}", _args[1], _xx, _yy);
+        Terminal.term_print(new Terminal.prompt(Terminal.c_success, _str));
     },
     "pause": function() {
         broadcast(MESSAGES.GAME_PAUSE);
-        Terminal.Print(new Terminal.Prompt(c_yellow, "Game paused"));
+        Terminal.term_print(new Terminal.prompt(c_yellow, "Game paused"));
     },
     "unpause": function() {
         broadcast(MESSAGES.GAME_UNPAUSE);
-        Terminal.Print(new Terminal.Prompt(c_yellow, "Game unpaused"));
+        Terminal.term_print(new Terminal.prompt(c_yellow, "Game unpaused"));
     }
 }

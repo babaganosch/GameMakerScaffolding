@@ -1,7 +1,7 @@
 {
   "resourceType": "GMShader",
   "resourceVersion": "1.0",
-  "name": "shd_gaussian_vertical",
+  "name": "sh_zsort",
   "parent": {
     "name": "Shaders",
     "path": "folders/Shaders.yy",

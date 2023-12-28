@@ -1,8 +1,8 @@
-function Camera(x, y, w, h) constructor
+function Camera(_x, _y, _w, _h) constructor
 {
-    pos   = [x, y];
-    size  = [w, h];
-    edges = [x, y, x+w, y+h];
+    pos   = [_x, _y];
+    size  = [_w, _h];
+    edges = [_x, _y, _x+_w, _y+_h];
     ref   = camera_create_view(pos[0], pos[1], size[0] + 1, size[1] + 1);
     buffer = [75, 75];
     active_zone = [edges[X1] - buffer[X], edges[Y1] - buffer[Y],
@@ -30,51 +30,44 @@ function Camera(x, y, w, h) constructor
         camera_destroy(ref);
     }
     
-    function move(x, y)
+    function move(_x, _y)
     {
-        pos[X] = x;
-        pos[Y] = y;
+        pos[X] = _x;
+        pos[Y] = _y;
         update();
     }
     
-    function move_center(x, y)
+    function move_center(_x, _y)
     {
-        pos[X] = x - (size[X] div 2);
-        pos[Y] = y - (size[Y] div 2);
+        pos[X] = _x - (size[X] div 2);
+        pos[Y] = _y - (size[Y] div 2);
         update();
     }
     
-    function move_relative(x, y)
+    function move_relative(_x, _y)
     {
-        pos[X] += x;
-        pos[Y] += y;
+        pos[X] += _x;
+        pos[Y] += _y;
         update();
     }
     
-    function approach(x, y, spd)
+    function approach(_x, _y, _spd)
     {
-        pos[X] = global.smooth_approach(pos[X], x, spd);
-        pos[Y] = global.smooth_approach(pos[Y], y, spd);
+        pos[X] = global.smooth_approach(pos[X], _x, _spd);
+        pos[Y] = global.smooth_approach(pos[Y], _y, _spd);
         update();
     }
     
-    function approach_center(x, y, spd)
+    function approach_center(_x, _y, _spd)
     {
-        pos[X] = global.smooth_approach(pos[X], x - (size[X] div 2), spd);
-        pos[Y] = global.smooth_approach(pos[Y], y - (size[Y] div 2), spd);
+        pos[X] = global.smooth_approach(pos[X], _x - (size[X] div 2), _spd);
+        pos[Y] = global.smooth_approach(pos[Y], _y - (size[Y] div 2), _spd);
         update();
     }
     
-    function resize(w, h)
+    function resize(_w, _h)
     {
-        size = [w, h];
+        size = [_w, _h];
         camera_set_view_size(ref, size[X] + 1, size[Y] + 1);
-    }
-    
-    if (false)
-    {
-        move_center(0, 0);
-        move_relative(0, 0);
-        resize(0, 0);
     }
 }

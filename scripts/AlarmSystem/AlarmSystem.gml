@@ -1,27 +1,29 @@
 game_alarms = new AlarmSystem();
 sys_alarms = new AlarmSystem();
 
-function AlarmEntry(duration, callback, periodic) constructor
+function AlarmEntry(_handle, _duration, _callback, _periodic) constructor
 {
-    time = duration;
-    cb = callback;
-    per = periodic == true ? duration : false;
+	handle = _handle;
+    time = _duration;
+    cb = _callback;
+    per = _periodic == true ? _duration : false;
 }
 
 function AlarmSystem() constructor
 {
 	alarm_list = [];
+	static next_id = 0;
 	
-	function add(duration, callback, periodic) {
-        var _id = new AlarmEntry(duration, callback, periodic);
-		array_push(alarm_list, _id);
-        return instance_id_get(_id);
+	function add(_duration, _callback, _periodic) {
+		var _handle = next_id++;
+        var _alrm = new AlarmEntry(_handle, _duration, _callback, _periodic);
+		array_push(alarm_list, _alrm);
+        return _handle;
 	}
     
-    function abort(alrm) {
-        if (is_undefined(alrm)) return false;
+    function abort(_handle) {
         for (var _i = 0; _i < array_length(alarm_list); ++_i) {
-            if (instance_id_get(alarm_list[_i]) == alrm) {
+            if (alarm_list[_i].handle == _handle) {
                 array_delete(alarm_list, _i, 1);
                 return true;
             }
@@ -36,9 +38,9 @@ function AlarmSystem() constructor
         alarm_list = [];
     }
 	
-	function tick(delta) {
+	function tick(_delta) {
 		for (var _i = 0; _i < array_length(alarm_list); ++_i) {
-			alarm_list[_i].time -= delta;
+			alarm_list[_i].time -= _delta;
 			if (alarm_list[_i].time <= 0) {
 				alarm_list[_i].cb();
                 if (alarm_list[_i].per != false) {

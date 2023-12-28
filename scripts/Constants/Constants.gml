@@ -37,18 +37,9 @@ enum MESSAGES {
 	MESSAGE_TEST,				// 0
     
     FULLSCREEN_TOGGLED,         // 1
-    GUI_SIZE_CHANGED,           // 2
+	WINDOW_SIZE_CHANGED,		// 2
+    GUI_SIZE_CHANGED,           // 3
     
-    GAME_PAUSE,                 // 3
-    GAME_UNPAUSE                // 4
+    GAME_PAUSE,                 // 4
+    GAME_UNPAUSE                // 5
 }
-
-if (__NOTIFICATIONS_DEBUG) global.MESSAGES_DEBUG_LOOKUP = [
-    "MESSAGE_TEST",
-    
-    "FULLSCREEN_TOGGLED",
-    "GUI_SIZE_CHANGED",
-    
-    "GAME_PAUSE",
-    "GAME_UNPAUSE"
-];

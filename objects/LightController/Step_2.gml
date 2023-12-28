@@ -1,1 +1,1 @@
-UpdateLights(dt);
+update_lights(dt);

@@ -1,5 +1,6 @@
-<h1 align="center">GMS 2.3+ GameMaker Scaffolding | v1.1.3</h1>
-<p align="center"><a href="https://twitter.com/Babaganosch">@babaganosch</a></p>
+<h1 align="center">GMS 2.3+ GameMaker Scaffolding | v1.2.0</h1>
+<p align="center"><a href="https://larsandersson.info">larsandersson.info</a></p>
+<p align="center">X: <a href="https://twitter.com/Babaganosch">@babaganosch</a></p>
 <p align="center">Download: <a href="https://github.com/babaganosch/GameMakerScaffolding/releases/latest">latest</a></p>
 
 ---
@@ -248,6 +249,9 @@ Another thing that the Game Controller does is handle the rendering of all the G
 </p>
 
 # Changelog
+**v1.2.0**
+* Fixed most Feather errors, warnings and suggestions
+
 **v1.1.3**
 * Object draw-sorting is now done through a shader
 

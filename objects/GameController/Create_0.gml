@@ -3,7 +3,7 @@ room_set_persistent(room, !DEBUG_STRESS_TEST);
 sprite_index = -1;
 receiver  = new Receiver(["system"]);
 
-shader_zsort = new ShaderProgram(shd_zsort);
+shader_zsort = new ShaderProgram(sh_zsort);
 
 /* Make sure this enum corresponds to the User Event numbers (16 events max) */
 enum GC_EVENT {

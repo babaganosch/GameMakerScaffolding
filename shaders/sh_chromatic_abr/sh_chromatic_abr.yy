@@ -1,7 +1,7 @@
 {
   "resourceType": "GMShader",
   "resourceVersion": "1.0",
-  "name": "DEBUG_SHADER",
+  "name": "sh_chromatic_abr",
   "parent": {
     "name": "Shaders",
     "path": "folders/Shaders.yy",

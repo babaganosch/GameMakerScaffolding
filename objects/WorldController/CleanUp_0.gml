@@ -2,7 +2,7 @@ PERSISTENT_CLEANUP
 unsubscribe();
 delete receiver;
 
-for (var i = 0; i < array_length(global.level); ++i)
+for (var _i = 0; _i < array_length(global.level); ++_i)
 {
-    global.level[i].destroy();
+    global.level[_i].destroy();
 }

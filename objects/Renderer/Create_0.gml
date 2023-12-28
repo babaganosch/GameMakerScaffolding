@@ -6,61 +6,72 @@ application_surface_draw_enable(false);
 gpu_set_texfilter(false);
 gpu_set_texrepeat(false);
 
-window_set_size( global.screen_width, global.screen_height );
-display_set_gui_size( global.game_width, global.game_height );
-gui_size = [ global.game_width, global.game_height ];
-surface_resize( application_surface, global.game_width + 1, global.game_height + 1 );
-
-#macro previous_frame 2
-surface_buffer = array_create(3);
-surface_buffer[0] = surface_create( global.game_width + 1, global.game_height + 1 );
-surface_buffer[1] = surface_create( global.game_width + 1, global.game_height + 1 );
-surface_buffer[previous_frame] = surface_create( global.game_width + 1, global.game_height + 1 );
-surface_flag = 0;
-
+window_set_size( global.game_size[X] * global.zoom, global.game_size[Y] * global.zoom );
+display_set_gui_size( global.game_size[X], global.game_size[Y] );
+gui_size = [ global.game_size[X], global.game_size[Y] ];
+window_size = [ window_get_width(), window_get_height() ];
+surface_resize( application_surface, global.game_size[X] + 1, global.game_size[Y] + 1 );
 fullscreen_flag = window_get_fullscreen();
+
+#macro PREVIOUS_FRAME 2
+surface_buffer = {
+	lo_res: array_create(3, -1),
+	hi_res: -1
+};
+surface_flag = 0;
 
 /// CAMERA
 #macro CAMERA global.camera
-CAMERA = new Camera(0, 0, global.game_width, global.game_height);
+CAMERA = new Camera(0, 0, global.game_size[X], global.game_size[Y]);
 CAMERA.activate();
+view_wport[0] = window_size[X] + global.zoom;
+view_hport[0] = window_size[Y] + global.zoom;
 
 /// SHADERS
-debug_shader = new ShaderProgram(DEBUG_SHADER);
-chromatic_shader = new ShaderProgram(shd_chromatic_abr);
+tv_screen_shader = new ShaderProgram(sh_tv_screen);
+tv_screen_shader.add_uniform("u_resolution", U_TYPE.F_VEC);
+tv_screen_shader.add_uniform("u_offset", U_TYPE.F_VEC);
 
 #region RENDER_FUNCTIONS
 
-function render_to_target(this, surface, callback)
+function render_to_target(_this, _surface, _setup)
 {
-    surface_set_target(surface);
-        method(this, callback)();
+    surface_set_target(_surface);
+        method(_this, _setup)();
     surface_reset_target();
 }
 
 /* Post FX in low-res resolution */
-function post_fx_pass(shd, func)
+function post_fx_pass(_shd, _setup)
 {
-    if (shd != -1) shd.set();
-    func();
-    render_to_target(self, surface_buffer[surface_flag], function() {
-        draw_surface(surface_buffer[!surface_flag], 0, 0);
+    if (_shd != -1) _shd.set();
+    _setup();
+    render_to_target(self, surface_buffer.lo_res[surface_flag], function() {
+        draw_surface(surface_buffer.lo_res[!surface_flag], 0, 0);
     });
-    if (shd != -1) shd.reset();
+    if (_shd != -1) _shd.reset();
     surface_flag = !surface_flag;
 }
 
 /* Final render call to screen */
-function render_to_screen(shd, correction_x, correction_y, scale, func)
+function render_to_hires(_this, _correction_x, _correction_y, _scale, _setup)
 {
-    if (shd != -1) shd.set();
-        func();
-        gpu_set_blendenable(true);
-        if (!view_enabled) { correction_x = 0; correction_y = 0; }
-        draw_surface_ext(surface_buffer[!surface_flag], -frac(correction_x) * scale, 
-            -frac(correction_y) * scale, scale, scale, 0, c_white, 1.0);
-        gpu_set_blendenable(true);
-    if (shd != -1) shd.reset();
+	surface_set_target(surface_buffer.hi_res);
+        method(_this, _setup)();
+		if (!view_enabled) { _correction_x = 0; _correction_y = 0; }
+		draw_surface_ext(surface_buffer.lo_res[!surface_flag], -frac(_correction_x) * _scale, 
+            -frac(_correction_y) * _scale, _scale, _scale, 0, c_white, 1.0);
+    surface_reset_target();
+}
+
+/// @param {Id.Instance} _this
+/// @param {any} _shd
+/// @param {Function} _setup
+function render_to_screen(_this, _shd, _setup)
+{
+    if (_shd != -1) _shd.set();
+        method(_this, _setup)();
+    if (_shd != -1) _shd.reset();
 }
 
 #endregion

@@ -13,7 +13,7 @@ switch (keyboard_lastkey)
         input_index = clamp(input_index - 1, 0, string_length(input_string)); 
     } break;
     case (vk_enter): {
-        Execute(new Prompt(c_white, input_string));
+        execute(new prompt(c_white, input_string));
         input_string = "";
         input_index = 0;
         history_index = -1;
@@ -21,14 +21,14 @@ switch (keyboard_lastkey)
     case (vk_up): {
         history_index = clamp(history_index + 1, -1, array_length(prompt_history) - 1);
         if (history_index == -1 || history_index > array_length(prompt_history)) break; 
-        input_string = prompt_history[history_index]._string;
+        input_string = prompt_history[history_index].str;
     } break;
     case (vk_down): {
         history_index = clamp(history_index - 1, -1, array_length(prompt_history) - 1);
         if (history_index == -1 || history_index > array_length(prompt_history)) {
             input_string = ""; break; 
         }
-        input_string = prompt_history[history_index]._string;
+        input_string = prompt_history[history_index].str;
     } break;
     case (vk_left): {
         input_index = clamp(input_index - 1, 0, string_length(input_string));   
@@ -47,7 +47,7 @@ switch (keyboard_lastkey)
 keyboard_lastchar = "";
 keyboard_lastkey  = 0;
 
-RenderTerminalSurface();
+render_terminal_surface();
 
 
 

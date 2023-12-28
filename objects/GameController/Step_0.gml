@@ -1,7 +1,7 @@
-var lite_game_objects = ACTIVE_LITE_OBJECTS;
-var list_size = array_length(lite_game_objects);
-var delta = dt;
-for (var i = 0; i < list_size; ++i)
+var _lite_game_objects = ACTIVE_LITE_OBJECTS;
+var _list_size = array_length(_lite_game_objects);
+var _delta = dt;
+for (var _i = 0; _i < _list_size; ++_i)
 {
-    lite_game_objects[i].update(delta);
+    _lite_game_objects[_i].update(_delta);
 }

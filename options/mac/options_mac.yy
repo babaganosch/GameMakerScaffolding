@@ -5,7 +5,7 @@
   "ConfigValues": {
     "Debug": {"option_mac_allow_fullscreen":"true","option_mac_interpolate_pixels":"false","option_mac_team_id":"","option_mac_display_name":"GameMaker Scaffolding",},
   },
-  "option_mac_allow_fullscreen": false,
+  "option_mac_allow_fullscreen": true,
   "option_mac_allow_incoming_network": false,
   "option_mac_allow_outgoing_network": false,
   "option_mac_app_category": "Games",
@@ -13,6 +13,7 @@
   "option_mac_apple_sign_in": false,
   "option_mac_arm64": true,
   "option_mac_build_app_store": false,
+  "option_mac_build_number": 0,
   "option_mac_copyright": "",
   "option_mac_disable_sandbox": false,
   "option_mac_display_cursor": true,

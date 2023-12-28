@@ -1,7 +1,7 @@
 {
   "resourceType": "GMShader",
   "resourceVersion": "1.0",
-  "name": "shd_gaussian_horizontal",
+  "name": "sh_tv_screen",
   "parent": {
     "name": "Shaders",
     "path": "folders/Shaders.yy",

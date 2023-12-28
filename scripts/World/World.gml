@@ -13,22 +13,23 @@ enum CELL_DATA {
     PLACEHOLDER3 = 32
 }
 
-#macro SECURE_WORLD_DIRECT_LOOKUP    { x = clamp(x, 0, _size[X] - 1); y = clamp(y, 0, _size[Y] - 1); }
+#macro SECURE_WORLD_DIRECT_LOOKUP    { _x = clamp(_x, 0, size[X] - 1); _y = clamp(_y, 0, size[Y] - 1); }
 #macro UNSECURE_WORLD_DIRECT_LOOKUP  { }
-#macro SECURE_WORLD_SQUARE_LOOKUP    { x1 = clamp(x1, 0, _size[X] - 1); y1 = clamp(y1, 0, _size[Y] - 1); \
-                                       x2 = clamp(x2, 0, _size[X] - 1); y2 = clamp(y2, 0, _size[Y] - 1); }
+#macro SECURE_WORLD_SQUARE_LOOKUP    { _x1 = clamp(_x1, 0, size[X] - 1); _y1 = clamp(_y1, 0, size[Y] - 1); \
+                                       _x2 = clamp(_x2, 0, size[X] - 1); _y2 = clamp(_y2, 0, size[Y] - 1); }
 #macro UNSECURE_WORLD_SQUARE_LOOKUP  { }
 
+// feather disable GM1038
 #macro DIRECT_LOOKUP_SAFETY          UNSECURE_WORLD_DIRECT_LOOKUP
 #macro SQUARE_LOOKUP_SAFETY          UNSECURE_WORLD_SQUARE_LOOKUP
 #macro Debug:DIRECT_LOOKUP_SAFETY    SECURE_WORLD_DIRECT_LOOKUP
 #macro Debug:SQUARE_LOOKUP_SAFETY    SECURE_WORLD_SQUARE_LOOKUP
 
-#macro ACTIVE_GAME_OBJECTS    CURRENT_LEVEL._active_game_objects
-#macro INACTIVE_GAME_OBJECTS  CURRENT_LEVEL._inactive_game_objects
+#macro ACTIVE_GAME_OBJECTS    CURRENT_LEVEL.active_game_objects
+#macro INACTIVE_GAME_OBJECTS  CURRENT_LEVEL.inactive_game_objects
 
-#macro ACTIVE_LITE_OBJECTS    CURRENT_LEVEL._active_lite_objects
-#macro INACTIVE_LITE_OBJECTS  CURRENT_LEVEL._inactive_lite_objects
+#macro ACTIVE_LITE_OBJECTS    CURRENT_LEVEL.active_lite_objects
+#macro INACTIVE_LITE_OBJECTS  CURRENT_LEVEL.inactive_lite_objects
 
 /*** Worlds
  * When implementing new levels, always inherit the World base class
@@ -41,100 +42,96 @@ enum CELL_DATA {
  *   function LevelXYSecretRoom(...) : SecretRoom(...) constructor {...
  */
 
-function World(tileset, w, h) constructor
+function World(_tileset, _w, _h) constructor
 {
-    _tileset = tileset;
-    _tile_variations = 2;       // TODO: Make dynamic
-    _tileset_max_tiles = 24;    // TODO: Make dynamic
-    _size = [w, h];
-    _valid = true;
-    _active = false;
-    _data = ds_grid_create(w, h);
-    ds_grid_set_region(_data, 0, 0, w, h, CELL_DATA.VOID);
+    tileset = _tileset;
+    tile_variations = 2;       // TODO: Make dynamic
+    tileset_max_tiles = 24;    // TODO: Make dynamic
+    size = [_w, _h];
+    valid = true;
+    active = false;
+    data = ds_grid_create(_w, _h);
+    ds_grid_set_region(data, 0, 0, _w, _h, CELL_DATA.VOID);
     
-    _active_game_objects = [];
-    _inactive_game_objects = [];
+    active_game_objects = [];
+    inactive_game_objects = [];
     
-    _active_lite_objects = [];
-    _inactive_lite_objects = [];
+    active_lite_objects = [];
+    inactive_lite_objects = [];
     
-    _floor_tm = new TileMap(_tileset, +50, w, h);
-    _wall_tm = new TileMap(_tileset, -200, w, h);
+    floor_tm = new TileMap(tileset, +50, _w, _h);
+    wall_tm = new TileMap(tileset, -200, _w, _h);
     
     // World coordinates passed in. Collision if CELL_DATA is even (WALL bit set)
     // Returns
     // 0 (false): FLOOR
     // 1 (true):  WALL
-    static check_collision_point = function(x, y)
+    static check_collision_point = function(_x, _y)
     {
-        x = x div CELL_W;
-        y = y div CELL_H;
-        DIRECT_LOOKUP_SAFETY;
-        return !(_data[# x, y - 1] & 1) || !(_data[# x, y] & 1);
+        _x = _x div CELL_W;
+        _y = _y div CELL_H;
+        DIRECT_LOOKUP_SAFETY
+        return !(data[# _x, _y - 1] & 1) || !(data[# _x, _y] & 1);
     }
     
-    static check_collision_square = function(x1, y1, x2, y2)
+    static check_collision_square = function(_x1, _y1, _x2, _y2)
     {
-        x1 = x1 div CELL_W; y1 = y1 div CELL_H;
-        x2 = x2 div CELL_W; y2 = y2 div CELL_H;
-        y1 -= 1;
-        SQUARE_LOOKUP_SAFETY;
-        return !(_data[# x1, y1] & 1) || !(_data[# x2, y2] & 1) ||
-               !(_data[# x1, y2] & 1) || !(_data[# x2, y1] & 1);
+        _x1 = _x1 div CELL_W; _y1 = _y1 div CELL_H;
+        _x2 = _x2 div CELL_W; _y2 = _y2 div CELL_H;
+        _y1 -= 1;
+        SQUARE_LOOKUP_SAFETY
+        return !(data[# _x1, _y1] & 1) || !(data[# _x2, _y2] & 1) ||
+               !(data[# _x1, _y2] & 1) || !(data[# _x2, _y1] & 1);
     }
     
-    static get_cell_data = function(x, y)
+    static get_cell_data = function(_x, _y)
     {
-        DIRECT_LOOKUP_SAFETY;
-        return _data[# x, y]; 
+        DIRECT_LOOKUP_SAFETY
+        return data[# _x, _y]; 
     }
     
-    static get_cell_coordinates = function(x, y)
+    static get_cell_coordinates = function(_x, _y)
     {
-        var xx = (x div CELL_W) * CELL_W;
-        var yy = (y div CELL_H) * CELL_H;
-        return [ xx, yy, xx + CELL_W, yy + CELL_H];
+        var _xx = (_x div CELL_W) * CELL_W;
+        var _yy = (_y div CELL_H) * CELL_H;
+        return [ _xx, _yy, _xx + CELL_W, _yy + CELL_H];
     }
     
     // Grid coordinates passed instead of world coordinates, usefull when pre-computing
     // coordinates for multiple calls.
-    static check_collision_point_raw = function(x, y)
+    static check_collision_point_raw = function(_x, _y)
     {
-        DIRECT_LOOKUP_SAFETY;
-        return !(_data[# x, y] & 1);
+        DIRECT_LOOKUP_SAFETY
+        return !(data[# _x, _y] & 1);
     }
     
-    static render = function(x1, y1, x2, y2) {
-        if (is_undefined(argument[0])) {
-            x1 = 1; x2 = _size[X]-1;
-            y1 = 1; y2 = _size[Y]-1;
-        }
-        x1 = clamp(x1, 1, _size[X]-1);
-        x2 = clamp(x2, 1, _size[X]-1);
-        y1 = clamp(y1, 1, _size[Y]-1);
-        y2 = clamp(y2, 1, _size[Y]-1);
-        for (var _x = x1; _x < x2; ++_x) {
-            for (var _y = y1; _y < y2; ++_y) {
-                var variation = _tileset_max_tiles * irandom(_tile_variations-1);
-                switch (_data[# _x, _y]) {
+    static render = function(_x1 = 1, _y1 = 1, _x2 = size[X]-1, _y2 = size[Y]-1) {
+        _x1 = clamp(_x1, 1, size[X]-1);
+        _x2 = clamp(_x2, 1, size[X]-1);
+        _y1 = clamp(_y1, 1, size[Y]-1);
+        _y2 = clamp(_y2, 1, size[Y]-1);
+        for (var _x = _x1; _x < _x2; ++_x) {
+            for (var _y = _y1; _y < _y2; ++_y) {
+                var _variation = tileset_max_tiles * irandom(tile_variations-1);
+                switch (data[# _x, _y]) {
                     case CELL_DATA.FLOOR: {
                         // CLEAR OLD WALLS FROM TILE
-                        _wall_tm.set_tile(_x, _y, TILE_ORIENTATION.EMPTY);
+                        wall_tm.set_tile(_x, _y, TILE_ORIENTATION.EMPTY);
                         // INNER WALL
-                        if ((_data[# _x, _y-1] != CELL_DATA.FLOOR))
-                             _floor_tm.set_tile(_x, _y, irandom_range(TILE_ORIENTATION.WALL0, TILE_ORIENTATION.WALL2) + variation);
+                        if ((data[# _x, _y-1] != CELL_DATA.FLOOR))
+                             floor_tm.set_tile(_x, _y, irandom_range(TILE_ORIENTATION.WALL0, TILE_ORIENTATION.WALL2) + _variation);
                         // FLOOR
-                        else _floor_tm.set_tile(_x, _y, irandom_range(TILE_ORIENTATION.FLOOR0, TILE_ORIENTATION.FLOOR3) + variation);
+                        else floor_tm.set_tile(_x, _y, irandom_range(TILE_ORIENTATION.FLOOR0, TILE_ORIENTATION.FLOOR3) + _variation);
                         
                     } break;
                     default: {
                         // WALLS ( data % 2 to check if void/wall bit is set, invert to check NOT void/wall )
-                        var _north_tile = !(_data[# _x, _y-1] & 1) * 1;
-                        var _west_tile  = !(_data[# _x-1, _y] & 1) * 2;
-                        var _east_tile  = !(_data[# _x+1, _y] & 1) * 4;
-                        var _south_tile = !(_data[# _x, _y+1] & 1) * 8;
-                        var _tile_index = (_north_tile + _west_tile + _east_tile + _south_tile + 1) + variation;
-                        _wall_tm.set_tile(_x, _y, _tile_index);
+                        var _north_tile = !(data[# _x, _y-1] & 1) * 1;
+                        var _west_tile  = !(data[# _x-1, _y] & 1) * 2;
+                        var _east_tile  = !(data[# _x+1, _y] & 1) * 4;
+                        var _south_tile = !(data[# _x, _y+1] & 1) * 8;
+                        var _tile_index = (_north_tile + _west_tile + _east_tile + _south_tile + 1) + _variation;
+                        wall_tm.set_tile(_x, _y, _tile_index);
                     } break;
                 }
             }
@@ -143,98 +140,97 @@ function World(tileset, w, h) constructor
     
     static activate = function()
     {
-        _active = true;
-        _floor_tm.set_visible( true );
-        _wall_tm.set_visible( true );
+        active = true;
+        floor_tm.set_visible( true );
+        wall_tm.set_visible( true );
     }
     
     static deactivate = function()
     {
-        _active = false;
-        _floor_tm.set_visible( false );
-        _wall_tm.set_visible( false );
-        for (var i = 0; i < array_length(_active_game_objects); ++i) {
-            var ins = _active_game_objects[i];
-            if (ins.dont_deactivate) continue;
-            array_push(_inactive_game_objects, ins);
-            array_delete(_active_game_objects, i--, 1);
-            ins.active = false;
-            instance_deactivate_object(ins);
+        active = false;
+        floor_tm.set_visible( false );
+        wall_tm.set_visible( false );
+        for (var _i = 0; _i < array_length(active_game_objects); ++_i) {
+            var _ins = active_game_objects[_i];
+            if (_ins.dont_deactivate) continue;
+            array_push(inactive_game_objects, _ins);
+            array_delete(active_game_objects, _i--, 1);
+            _ins.active = false;
+            instance_deactivate_object(_ins);
         }
         
-        for (var i = 0; i < array_length(_active_lite_objects); ++i) {
-            var ins = _active_lite_objects[i];
-            array_push(_inactive_lite_objects, ins);
-            array_delete(_active_lite_objects, i--, 1);
+        for (var _i = 0; _i < array_length(active_lite_objects); ++_i) {
+            var _ins = active_lite_objects[_i];
+            array_push(inactive_lite_objects, _ins);
+            array_delete(active_lite_objects, _i--, 1);
         }
         
     }
     
-    static set_area = function(x1, y1, x2, y2, value)
+    static set_area = function(_x1, _y1, _x2, _y2, _value)
     {
-        ds_grid_set_region(_data, clamp(x1, 0, _size[X] - 1), clamp(y1, 0, _size[Y] - 1), 
-                                  clamp(x2, 0, _size[X] - 1), clamp(y2, 0, _size[Y] - 1), value);
+        ds_grid_set_region(data, clamp(_x1, 0, size[X] - 1), clamp(_y1, 0, size[Y] - 1), 
+                                  clamp(_x2, 0, size[X] - 1), clamp(_y2, 0, size[Y] - 1), _value);
     }
     
-    static set_cell = function(x, y, value)
+    static set_cell = function(_x, _y, _value)
     {
-        ds_grid_set(_data, clamp(x, 0, _size[X] - 1), clamp(y, 0, _size[Y] - 1), value);
+        ds_grid_set(data, clamp(_x, 0, size[X] - 1), clamp(_y, 0, size[Y] - 1), _value);
     }
     
     // Get map data from world coordinates
-    static get_cell = function(x, y)
+    static get_cell = function(_x, _y)
     {
-        return _data[# x div CELL_W, y div CELL_H];
+        return data[# _x div CELL_W, _y div CELL_H];
     }
     
     // Get map data from grid coordinates
-    static get_cell_raw = function(x, y)
+    static get_cell_raw = function(_x, _y)
     {
-        return _data[# floor(x), floor(y)];
+        return data[# floor(_x), floor(_y)];
     }
     
-    static valid = function()
+    static is_valid = function()
     {
-        return _valid;
+        return valid;
     }
     
-    static active = function()
+    static is_active = function()
     {
-        return _active;
+        return active;
     }
     
     static destroy = function()
     {
-        _valid = false;
-        ds_grid_destroy(_data);
-        _floor_tm.destroy();
-        _wall_tm.destroy();
+        valid = false;
+        ds_grid_destroy(data);
+        floor_tm.destroy();
+        wall_tm.destroy();
     }
 }
 
-function TileMap(tileset, depth, w, h) constructor
+function TileMap(_tileset, _depth, _w, _h) constructor
 {
-    _tileset = tileset;
-    _size = [w, h];
-    _depth = depth;
-    _layer = layer_create(_depth);
-    _tilemap = layer_tilemap_create(_layer, 0, 0, _tileset, _size[X], _size[Y]);
-    layer_set_visible(_layer, false);
+    tileset = _tileset;
+    size = [_w, _h];
+    layer_handle = layer_create(_depth);
+    tilemap = layer_tilemap_create(layer_handle, 0, 0, tileset, size[X], size[Y]);
+    layer_set_visible(layer_handle, false);
     
-    static set_tile = function( x, y, data )
+    static set_tile = function( _x, _y, _data )
     {
-        tilemap_set(_tilemap, data, x, y);
+        tilemap_set(tilemap, _data, _x, _y);
     }
     
-    static set_visible = function( value )
+    static set_visible = function( _value )
     {
-        layer_set_visible(_layer, value);
+        layer_set_visible(layer_handle, _value);
     }
     
     static destroy = function()
     {
-        layer_tilemap_destroy(_tilemap);
-        layer_destroy(_layer);
+        layer_tilemap_destroy(tilemap);
+        layer_destroy(layer_handle);
     }
 }
 
